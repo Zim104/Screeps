@@ -1,10 +1,41 @@
+//-----SETTINGS-----
 
-// Adjust population caps here
-var hCap = 2;
-var bCap = 2;
-var rCap = 1;
-var uCap = 1;
+//Note, dynamic spawning will not work properly in a new room.  You will need to manually update the creep body parts below
+//This will be fixed in a later version
+
+//Set username
 var userName = "Zim";
+
+//Adjust population caps here
+var hCap = 3;
+var bCap = 0;
+var rCap = 1;
+var uCap = 2;
+
+//Show summary on tick?
+var showSum = false;
+
+//Turn on tower wall healing?
+var towerHeal = false;
+var towerHealTo = 125000;
+
+//Define if upgraders get energy from sources or storage
+//        var getFrom = "storage";
+
+//-----SETTINGS-----
+
+
+//Inject some memory for starting rooms
+if (Memory.firstRun==null) {
+    if (Memory.cNum==null){
+        Memory.cNum=1;
+    }
+    if (Memory.failSafe==null){
+        Memory.cNum=250;
+    }
+    Memory.firstRun=1;
+}
+
 
 //The real stuff starts here.
 module.exports.loop = function () {
@@ -27,13 +58,26 @@ module.exports.loop = function () {
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
     var population = harvesters.length + repairers.length + builders.length + upgraders.length;
 
-//These need to be adjusted at the start of a room to WORK,CARRY,MOVE
-//    console.log('-------------------------')
-//    console.log('Pop:' + population + ' - H:' + harvesters.length + '/' + hCap + ' - R:' + repairers.length + '/' + rCap + ' - B:' + builders.length + '/' + bCap + ' - U:' + upgraders.length + '/' + uCap + ' ......... Enrgy:' + 'maybe later');
+//How much energy is available?  Thanks for the code, Dan
+    var energystores = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION ||
+    structure.structureType == STRUCTURE_SPAWN ||
+    structure.structureType == STRUCTURE_CONTAINER);
 
+    TotalEnergy = 0;
+    for (var i in energystores)
+    {
+        TotalEnergy += energystores[i].energy;
+    }
+
+    if (showSum == true) {
+        console.log('-------------------------')
+        console.log('Pop:' + population + ' - H:' + harvesters.length + '/' + hCap + ' - R:' + repairers.length + '/' + rCap + ' - B:' + builders.length + '/' + bCap + ' - U:' + upgraders.length + '/' + uCap + ' ......... Enrgy:' + TotalEnergy);
+    }
+
+//These need to be adjusted at the start of a room to WORK,CARRY,MOVE
 //Checking to see if new spawns are needed
     if (harvesters.length < hCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'H' + Memory.cNum, {role: 'harvester'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'H' + Memory.cNum, {role: 'harvester'});
         console.log('Spawning new harvester: ' + newName);
         Memory.cNum++;
         Memory.failSafe--;
@@ -49,19 +93,18 @@ module.exports.loop = function () {
         Memory.cNum++;
     }
     else if (repairers.length < rCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'R' + Memory.cNum, {role: 'repairer'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'R' + Memory.cNum, {role: 'repairer'});
         console.log('Spawning new repairer: ' + newName);
         Memory.cNum++;
     }
     else if (upgraders.length < uCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'U' + Memory.cNum, {role: 'upgrader'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'U' + Memory.cNum, {role: 'upgrader'});
         console.log('Spawning new upgrader: ' + newName);
         Memory.cNum++;
     }
 
     else if (harvesters.length == hCap & Memory.failSafe != 250) {
         Memory.failSafe = 250;
-        //console.log(harvesters.length + " " +  hCap)
         console.log('Defcon countdown reset to: ' + Memory.failSafe);
     }
     
@@ -83,23 +126,8 @@ module.exports.loop = function () {
         }
     }
 
-//Tower defense
-
-//   function defendRoom(roomName) {
-//        var hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-//        if(hostiles.length > 0) {
-//            var username = hostiles[0].owner.username;
-//            Game.notify(`User ${username} spotted in room ${roomName}`);
-//            var towers = Game.rooms[roomName].find(
-//                FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER
-//                }});
-//            towers.forEach(tower => tower.attack(hostiles[0]));
-//        }
-//    }
-
-
-
-    var towers = Game.rooms.E41S13.find(FIND_STRUCTURES, {
+//Tower Defense
+    var towers = Room.find(FIND_STRUCTURES, {
         filter: (s) => s.structureType == STRUCTURE_TOWER
     });
     for (let tower of towers) {
@@ -107,20 +135,18 @@ module.exports.loop = function () {
         if (target != undefined) {
             tower.attack(target);
             Game.notify("Tower has spotted enemies!")
+            console.log("ENEMY SIGHTED!")
         }
-        else {
-// Turn on tower healing?
+//Tower Healing
+        else if(towerHeal == true) {
             var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.structureType == STRUCTURE_WALL && structure.hits < 125000 && structure.hits != structure.hitsMax
+                filter: (structure) => structure.structureType == STRUCTURE_WALL && structure.hits < towerHealTo && structure.hits != structure.hitsMax
             });
             if(closestDamagedStructure && tower.energy > 700) {
                 tower.repair(closestDamagedStructure);
             }
-// Turn off healing
         }
     }
-
-
 }
 
 
