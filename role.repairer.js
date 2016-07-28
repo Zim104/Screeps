@@ -6,10 +6,13 @@
 var roadRep = true;
 
 //When to repair roads? 1.2 is 80%, 2 is 50%, 3 is 33%
-var roadRepStart = 1.2;
+var roadRepStart = 1.4;
 
 //Turn on Structure repair?
-var StructureRep = true;
+var structureRep = true;
+
+//Max structure hits heal?
+var structureRepHits = 350000;
 
 //-----SETTINGS-----
 
@@ -43,14 +46,14 @@ var roleRepairer = {
             if(repRoad){
                 creep.moveTo(repRoad);
                 creep.repair(repRoad);
-                //console.log('I am repairing roads now')
+//console.log('I am repairing roads now')
             }
-            else {
+            else if (structureRep = true) {
 //repair structures that aren't walls or roads
                 var targets = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType != STRUCTURE_ROAD & structure.structureType != STRUCTURE_WALL
-                        & structure.hits != structure.hitsMax);
+                        & structure.hits != structure.hitsMax) & structure.hits < structureRepHits;
                     }
 	            });
                 if(targets) {

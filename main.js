@@ -10,30 +10,24 @@ var userName = "Zim";
 var hCap = 3;
 var bCap = 0;
 var rCap = 1;
-var uCap = 2;
+var uCap = 3;
+var mCap = 3;
 
 //Show summary on tick?
-var showSum = false;
+var showSum = 0;
 
 //Turn on tower wall healing?
-var towerHeal = false;
+var towerHeal = 1;
 var towerHealTo = 125000;
-
-//Define if upgraders get energy from sources or storage
-//        var getFrom = "storage";
 
 //-----SETTINGS-----
 
 
 //Inject some memory for starting rooms
-if (Memory.firstRun==null) {
-    if (Memory.cNum==null){
-        Memory.cNum=1;
-    }
-    if (Memory.failSafe==null){
-        Memory.cNum=250;
-    }
-    Memory.firstRun=1;
+if (Memory.firstRun == null) {
+    Memory.cNum = 1;
+    Memory.failSafe = 250;
+    Memory.firstRun = 1;
 }
 
 
@@ -45,18 +39,21 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
+    
 
     var Room=Game.spawns.Spawn1.room;
     var roleHarvester = require('role.harvester');
     var roleUpgrader = require('role.upgrader');
     var roleBuilder = require('role.builder');
     var roleRepairer = require('role.repairer');
+    var roleMiner = require('role.miner');
 
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-    var population = harvesters.length + repairers.length + builders.length + upgraders.length;
+    var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+    var population = harvesters.length + repairers.length + builders.length + upgraders.length + miners.length;
 
 //How much energy is available?  Thanks for the code, Dan
     var energystores = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION ||
@@ -71,7 +68,7 @@ module.exports.loop = function () {
 
     if (showSum == true) {
         console.log('-------------------------')
-        console.log('Pop:' + population + ' - H:' + harvesters.length + '/' + hCap + ' - R:' + repairers.length + '/' + rCap + ' - B:' + builders.length + '/' + bCap + ' - U:' + upgraders.length + '/' + uCap + ' ......... Enrgy:' + TotalEnergy);
+        console.log('Pop:' + population + ' - H:' + harvesters.length + '/' + hCap + ' - R:' + repairers.length + '/' + rCap + ' - B:' + builders.length + '/' + bCap + ' - U:' + upgraders.length + '/' + uCap + ' - M:' + miners.length + '/' + mCap+ ' ......... Enrgy:' + TotalEnergy);
     }
 
 //These need to be adjusted at the start of a room to WORK,CARRY,MOVE
@@ -93,13 +90,18 @@ module.exports.loop = function () {
         Memory.cNum++;
     }
     else if (repairers.length < rCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'R' + Memory.cNum, {role: 'repairer'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'R' + Memory.cNum, {role: 'repairer'});
         console.log('Spawning new repairer: ' + newName);
         Memory.cNum++;
     }
     else if (upgraders.length < uCap) {
         var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'U' + Memory.cNum, {role: 'upgrader'});
         console.log('Spawning new upgrader: ' + newName);
+        Memory.cNum++;
+    }
+    else if (miners.length < mCap) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner'});
+        console.log('Spawning new miner: ' + newName);
         Memory.cNum++;
     }
 
@@ -124,6 +126,9 @@ module.exports.loop = function () {
         if (creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
         }
+        if (creep.memory.role == 'miner') {
+            roleMiner.run(creep);
+        }
     }
 
 //Tower Defense
@@ -140,9 +145,9 @@ module.exports.loop = function () {
 //Tower Healing
         else if(towerHeal == true) {
             var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.structureType == STRUCTURE_WALL && structure.hits < towerHealTo && structure.hits != structure.hitsMax
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < towerHealTo && structure.hits != structure.hitsMax
             });
-            if(closestDamagedStructure && tower.energy > 700) {
+            if(closestDamagedStructure && tower.energy > 750) {
                 tower.repair(closestDamagedStructure);
             }
         }
