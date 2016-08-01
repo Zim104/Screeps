@@ -1,16 +1,33 @@
 //-----SETTINGS-----
 
-//Do upgraders get energy from storage or sources?
-var getFrom="storage";
+//Does room 1 get energy from storage,sources, or spawn?
+var getFromRoom1="storage";
+
+//Does room 2 get energy from storage,sources, or spawn?
+var getFromRoom2="sources";
 
 //-----SETTINGS-----
-
 
 
 var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+//Where does it get it's energy from?
+        if (creep.memory.bornIn == 1) {
+            var getFrom=getFromRoom1;
+        }
+        else if (Memory.spawnrooms == 2){
+            if (creep.memory.bornIn == 2) {
+                var getFrom=getFromRoom2;
+            }
+        }
+        else if (creep.memory.bornIn == "nomad"){
+            var getFrom="sources";
+        }
+
+
 
 	    if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;

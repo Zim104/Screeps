@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.12
+Version 0.14
 
 
 To do list
@@ -8,11 +8,24 @@ To do list
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Maybe combining builders with repairers (with repairing getting a priority of course).
 o Dynamic creep spawning based on energy available.
-o Develop system for managing population caps when handling multiple rooms.
+o Unmessify the craziness that is multiple room population control.
 
 
 History
 ===========================
+
+Version 0.14
+7/31
+---------------------------
+- Code is officially a mess.
+- Added claimer role.  Moves based on flags.
+- Added attacker role.  Also moves based on flags.
+- Added support for room #2.  Spawns different sized creeps and counts it's population separately.
+- Added creep.memory.bornIn to designate which room they originated from.  Can also be set to nomad, in which they will typically use sources for energy.
+- Added some other settings to memory.
+- Added some other things that I can't remember right now.
+- Note: The update works well enough.  My brain hurts after going through hours of trying to reach some sort of workable management of multiple rooms.  Since my rooms are so incredibly different (one only has 1 source with 1 access point....) I ended up with completely separate controls for each room.
+
 
 Version 0.13
 7/28
