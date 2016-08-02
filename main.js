@@ -6,8 +6,8 @@
 //Set username
 var userName = "Zim";
 
-//Show summary on tick?  If so, which room?  ('all' is a valid sumRoom)
-var showSum = 1;
+//Show summary on tick?  If so, which room?  ('all' or 'nomads' are a valid sumRoom)
+var showSum = 0;
 var sumRoom = 'all';
 
 
@@ -18,16 +18,19 @@ var rCap1 = 1;
 var uCap1 = 1;
 var mCap1 = 0;
 var cCap1 = 0;
-var aCap1 = 3;
+var aCap1 = 0;
 
 //Room 2 population caps
-var hCap2 = 2;
-var bCap2 = 0;
+var hCap2 = 0;
+var bCap2 = 1;
 var rCap2 = 0;
-var uCap2 = 3;
+var uCap2 = 4;
 var mCap2 = 0;
 var cCap2 = 0;
 var aCap2 = 0;
+
+//Nomad population caps
+var n1Cap = 2; //harvester
 
 
 //Turn on tower wall healing?
@@ -40,6 +43,7 @@ var room2Name = "[room E41S14]";
 
 //How many spawn rooms do you have?
 var spawnrooms = 2;
+
 
 //-----SETTINGS-----
 
@@ -115,6 +119,10 @@ module.exports.loop = function () {
     var attackers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '2');
     var population2 = harvesters2.length + repairers2.length + builders2.length + upgraders2.length + miners2.length + claimers2.length + attackers2.length;
 
+//Population monitoring for nomads
+    var nomads1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
+    var populationN = nomads1.length;
+
 //How much energy is available?  Thanks for the code, Dan
     var energystores = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION ||
     structure.structureType == STRUCTURE_SPAWN ||
@@ -138,6 +146,10 @@ module.exports.loop = function () {
         else if (sumRoom =="all"){
             console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + miners1.length + '/' + mCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
             console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + miners2.length + '/' + mCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
+            console.log('[Nomads]Pop:' + populationN + ' - N1:' + nomads1.length);
+        }
+        else if (sumRoom =="nomads"){
+            console.log('[Nomads]Pop:' + populationN + ' - N1:' + nomads1.length);
         }
 
     }
@@ -197,7 +209,7 @@ module.exports.loop = function () {
 //If spawn is in room2, then spawn things like this...
     if (Memory.spawnrooms == 2){
         if (harvesters2.length < hCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, MOVE], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, MOVE], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
             console.log('[Room2]Spawning new harvester: ' + newName);
             Memory.cNum2++;
             Memory.failSafe2--;
@@ -208,7 +220,7 @@ module.exports.loop = function () {
             }
         }
         else if (builders2.length < bCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
             console.log('[Room2]Spawning new builder: ' + newName);
             Memory.cNum2++;
         }
@@ -218,7 +230,7 @@ module.exports.loop = function () {
             Memory.cNum2++;
         }
         else if (upgraders2.length < uCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, MOVE], 'U' + Memory.cNum2, {role: 'upgrader', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, MOVE], 'U' + Memory.cNum2, {role: 'upgrader', bornIn: '2'});
             console.log('[Room2]Spawning new upgrader: ' + newName);
             Memory.cNum2++;
         }
@@ -245,6 +257,19 @@ module.exports.loop = function () {
             console.log('[Room2]Defcon countdown reset to: ' + Memory.failSafe2);
         }
     }
+
+//Nomad mode
+    if (nomads1.length < n1Cap) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'N' + Memory.cNum, {
+            role: 'harvester',
+            bornIn: 'nomad',
+            goFlag: '1'
+        });
+        console.log('[Room1]Spawning new nomad harvester: ' + newName);
+        Memory.cNum++;
+    }
+
+
 
 //Telling each creep what to do
     for (var name in Game.creeps) {

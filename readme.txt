@@ -1,10 +1,11 @@
 Hunter's Screep Code
 ===========================
-Version 0.14
+Version 0.15
 
 
 To do list
 ===========================
+o Use the harvester nomad flag code with other traveling creeps.
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Maybe combining builders with repairers (with repairing getting a priority of course).
 o Dynamic creep spawning based on energy available.
@@ -13,6 +14,12 @@ o Unmessify the craziness that is multiple room population control.
 
 History
 ===========================
+
+Version 0.15
+8/1
+---------------------------
+- Refined the nomad code.  Now, a powerful room (room 1) can gift other creeps to other rooms.  When a nomad get's within range 5 of a flag, it's set loose and will go about it's normal behavior.  Only currently set up for nomad harvester.
+
 
 Version 0.14
 7/31

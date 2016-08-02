@@ -4,7 +4,7 @@
 var getFromRoom1="storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2="sources";
+var getFromRoom2="spawn";
 
 //-----SETTINGS-----
 
@@ -65,6 +65,19 @@ var roleBuilder = {
             }
 
 	    }
+	    
+	    // Get energy from spawn?
+        else if(getFrom=="spawn"){
+            var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+            creep.moveTo(spwn);
+            if((spwn.energy) > [149]) {
+                spwn.transferEnergy(creep);
+            }
+            else {
+
+            }
+        }
+	    
 	}
 };
 

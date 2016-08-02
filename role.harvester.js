@@ -13,10 +13,22 @@ var roleHarvester = {
 	    }
 
 //Get full energy, if needed
+//Nomad flag mode first
 	    if(creep.memory.return == false) {
-            var source = creep.pos.findClosestByPath(FIND_SOURCES);
-            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
+	        if (creep.memory.goFlag == "1"){
+	            creep.moveTo(Game.flags.Flag4)
+                console.log(creep.pos.inRangeTo(Game.flags.Flag4, 5))
+                if (creep.pos.inRangeTo(Game.flags.Flag4, 5) == '1') {
+                    creep.memory.goFlag ="0"
+                    console.log("Clearing goflag")
+                }
+            }
+//Find sources
+            else {
+                var source = creep.pos.findClosestByPath(FIND_SOURCES);
+                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                }
             }
         }
 
