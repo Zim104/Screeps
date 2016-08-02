@@ -4,7 +4,7 @@ var roleClaimer = {
 
 
     run: function(creep) {
-        creep.moveTo(Game.flags.Flag3);
+        creep.moveTo(Game.flags.Claimers);
         console.log(creep.name)
         console.log(creep.claimController(creep.room.controller));
 

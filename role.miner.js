@@ -20,7 +20,7 @@ var roleMiner = {
 
 
         if (creep.memory.return == false) {
-            creep.moveTo(Game.flags.Flag1);
+            creep.moveTo(Game.flags.Mine);
             var source = creep.pos.findClosestByPath(FIND_SOURCES);
             if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
 //                creep.moveTo(source);
@@ -41,7 +41,7 @@ var roleMiner = {
                 }
             });
             if (target == null) {
-                creep.moveTo(Game.flags.Flag2);
+                creep.moveTo(Game.flags.MineStorage);
                 var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
@@ -51,7 +51,7 @@ var roleMiner = {
             
 // Move to closest energy container
             if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.flags.Flag2);
+                creep.moveTo(Game.flags.MineStorage);
             }
         }
     }

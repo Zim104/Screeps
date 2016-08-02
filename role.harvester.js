@@ -16,9 +16,8 @@ var roleHarvester = {
 //Nomad flag mode first
 	    if(creep.memory.return == false) {
 	        if (creep.memory.goFlag == "1"){
-	            creep.moveTo(Game.flags.Flag4)
-                console.log(creep.pos.inRangeTo(Game.flags.Flag4, 5))
-                if (creep.pos.inRangeTo(Game.flags.Flag4, 5) == '1') {
+	            creep.moveTo(Game.flags.Nomads)
+                if (creep.pos.inRangeTo(Game.flags.Nomads, 5) == '1') {
                     creep.memory.goFlag ="0"
                     console.log("Clearing goflag")
                 }

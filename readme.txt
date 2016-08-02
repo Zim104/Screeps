@@ -1,19 +1,30 @@
 Hunter's Screep Code
 ===========================
-Version 0.15
+Version 0.16
+
 
 
 To do list
 ===========================
-o Use the harvester nomad flag code with other traveling creeps.
+o Use nomad flag code with other traveling creeps.
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Maybe combining builders with repairers (with repairing getting a priority of course).
-o Dynamic creep spawning based on energy available.
-o Unmessify the craziness that is multiple room population control.
+o Unmessify the craziness that is multiple room population control....  I don't know, maybe it's not thaaat bad.
+
 
 
 History
 ===========================
+
+
+Version 0.16
+8/2
+---------------------------
+- Added builder nomads.
+- Added wall repair settings to repairers.  (good for brand new walls)
+- Added support for room 2 tower defense and healing.  (done poorly, needs fixing.)
+- Fixed some broken stuff.
+
 
 Version 0.15
 8/1

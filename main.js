@@ -12,30 +12,33 @@ var sumRoom = 'all';
 
 
 //Room 1 population caps
-var hCap1 = 3;
-var bCap1 = 0;
-var rCap1 = 1;
-var uCap1 = 1;
-var mCap1 = 0;
-var cCap1 = 0;
-var aCap1 = 0;
+var hCap1 = 3;  //harvester
+var bCap1 = 0;  //builder
+var rCap1 = 1;  //repairer
+var uCap1 = 2;  //upgrader
+var mCap1 = 0;  //miner
+var cCap1 = 0;  //claimer
+var aCap1 = 0;  //attacker
 
 //Room 2 population caps
-var hCap2 = 0;
-var bCap2 = 1;
-var rCap2 = 0;
-var uCap2 = 4;
-var mCap2 = 0;
-var cCap2 = 0;
-var aCap2 = 0;
+var hCap2 = 0;  //harvester
+var bCap2 = 0;  //builder
+var rCap2 = 0;  //repairer
+var uCap2 = 1;  //upgrader
+var mCap2 = 0;  //miner
+var cCap2 = 0;  //claimer
+var aCap2 = 0;  //attacker
 
 //Nomad population caps
-var n1Cap = 2; //harvester
-
+var nhCap = 2;  //harvester
+var nbCap = 1;  //builder
 
 //Turn on tower wall healing?
-var towerHeal = 1;
-var towerHealTo = 125000;
+var tower1Heal = 1;
+var tower1HealTo = 125000;
+var tower2Heal = 1;
+var tower2HealTo = 50000;
+
 
 //Name of rooms
 var room1Name = "[room E41S13]";
@@ -90,7 +93,10 @@ module.exports.loop = function () {
 
 
 
-    var Room=Game.spawns.Spawn1.room;
+    var Room1=Game.spawns.Spawn1.room;
+    if (spawnrooms <= 2) {
+        var Room2=Game.spawns.Spawn2.room;
+    }
     var roleHarvester = require('role.harvester');
     var roleUpgrader = require('role.upgrader');
     var roleBuilder = require('role.builder');
@@ -120,8 +126,9 @@ module.exports.loop = function () {
     var population2 = harvesters2.length + repairers2.length + builders2.length + upgraders2.length + miners2.length + claimers2.length + attackers2.length;
 
 //Population monitoring for nomads
-    var nomads1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
-    var populationN = nomads1.length;
+    var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
+    var nomadsB = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == 'nomad');
+    var populationN = nomadsH.length + nomadsB.length;
 
 //How much energy is available?  Thanks for the code, Dan
     var energystores = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION ||
@@ -146,10 +153,10 @@ module.exports.loop = function () {
         else if (sumRoom =="all"){
             console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + miners1.length + '/' + mCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
             console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + miners2.length + '/' + mCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
-            console.log('[Nomads]Pop:' + populationN + ' - N1:' + nomads1.length);
+            console.log('[Nomads]Pop:' + populationN + ' - NH:' + nomadsH.length + '/' + nhCap + ' - NB:' + nomadsB.length + '/' + nbCap);
         }
         else if (sumRoom =="nomads"){
-            console.log('[Nomads]Pop:' + populationN + ' - N1:' + nomads1.length);
+            console.log('[Nomads]Pop:' + populationN + ' - NH:' + nomadsH.length + '/' + nhCap + ' - NB:' + nomadsB.length + '/' + nbCap);
         }
 
     }
@@ -259,8 +266,8 @@ module.exports.loop = function () {
     }
 
 //Nomad mode
-    if (nomads1.length < n1Cap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'N' + Memory.cNum, {
+    if (nomadsH.length < nhCap) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'NH' + Memory.cNum, {
             role: 'harvester',
             bornIn: 'nomad',
             goFlag: '1'
@@ -268,6 +275,16 @@ module.exports.loop = function () {
         console.log('[Room1]Spawning new nomad harvester: ' + newName);
         Memory.cNum++;
     }
+    else if (nomadsB.length < nbCap) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'NB' + Memory.cNum, {
+            role: 'builder',
+            bornIn: 'nomad',
+            goFlag: '1'
+        });
+        console.log('[Room1]Spawning new nomad builder: ' + newName);
+        Memory.cNum++;
+    }
+
 
 
 
@@ -300,28 +317,51 @@ module.exports.loop = function () {
 
 
 
-
-//Tower Defense
-    var towers = Room.find(FIND_STRUCTURES, {
+//Gotta be a better way to do towers and not call on them one room at a time....
+//Tower Defense Room 1
+    var towers1 = Room1.find(FIND_STRUCTURES, {
         filter: (s) => s.structureType == STRUCTURE_TOWER
     });
-    for (let tower of towers) {
-        var target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if (target != undefined) {
-            tower.attack(target);
-            Game.notify("Tower has spotted enemies!")
-            console.log("ENEMY SIGHTED!")
+    for (let tower1 of towers1) {
+        var targetTower2 = tower1.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (targetTower2 != undefined) {
+            tower1.attack(targetTower2);
+            Game.notify("Room1 Tower has spotted enemies!")
+            console.log("[Room1]ENEMY SIGHTED!")
         }
 //Tower Healing
-        else if(towerHeal == true) {
-            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < towerHealTo && structure.hits != structure.hitsMax
+        else if(tower1Heal == 1) {
+            var closestDamagedStructure = tower1.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower1HealTo && structure.hits != structure.hitsMax
             });
-            if(closestDamagedStructure && tower.energy > 750) {
-                tower.repair(closestDamagedStructure);
+            if(closestDamagedStructure && tower1.energy > 700) {
+                tower1.repair(closestDamagedStructure);
             }
         }
     }
+
+//Tower Defense Room 2
+    var towers2 = Room2.find(FIND_STRUCTURES, {
+        filter: (s) => s.structureType == STRUCTURE_TOWER
+    });
+    for (let tower2 of towers2) {
+        var targetTower2 = tower2.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (targetTower2 != undefined) {
+            tower2.attack(targetTower2);
+            Game.notify("Room2 Tower has spotted enemies!")
+            console.log("[Room2]ENEMY SIGHTED!")
+        }
+//Tower Healing
+        else if(tower2Heal == 1) {
+            var closestDamagedStructure = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower2HealTo && structure.hits != structure.hitsMax
+            });
+            if(closestDamagedStructure && tower2.energy > 700) {
+                tower2.repair(closestDamagedStructure);
+            }
+        }
+    }
+
 }
 
 

@@ -2,6 +2,12 @@
 
 //Note - these repairers are meant to only repair roads and structures.  Instead, Extra turret energy is used to repair walls.
 
+//Turn on wall repair?
+var wallRep = 0; //This seems to break road repair.  Needs to be fixed.
+
+//Max wall hits heal?
+var wallRepHits = 2000;
+
 //Turn on road repair?
 var roadRep = true;
 
@@ -31,39 +37,57 @@ var roleRepairer = {
 //Not enough energy to repair
             }
         }
-        else if (roadRep == true) {
+//repair walls
+        else if (wallRep == true) {
+            var targetWall = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_WALL
+                        & structure.hits != structure.hitsMax) & structure.hits < wallRepHits;
+                }
+            });
+            if(targetWall) {
+                if(creep.repair(targetWall) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targetWall);
+                }
+            }
+        }
+
+
+
 //repair roads
+        else if (roadRep == true) {
             var repRoad = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: function(object){
-                    if(object.structureType == STRUCTURE_ROAD & object.hits < object.hitsMax / roadRepStart){
+                filter: function (object) {
+                    if (object.structureType == STRUCTURE_ROAD & object.hits < object.hitsMax / roadRepStart) {
                         return true;
                     }
                     else {
                         return false;
                     }
-                } 
+                }
             });
-            if(repRoad){
+            if (repRoad) {
                 creep.moveTo(repRoad);
                 creep.repair(repRoad);
 //console.log('I am repairing roads now')
             }
-            else if (structureRep = true) {
+        }
+        else if (structureRep = true) {
 //repair structures that aren't walls or roads
-                var targets = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                var targetRoad = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType != STRUCTURE_ROAD & structure.structureType != STRUCTURE_WALL
                         & structure.hits != structure.hitsMax) & structure.hits < structureRepHits;
                     }
 	            });
-                if(targets) {
-                    if(creep.repair(targets) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(targets);
+                if(targetRoad) {
+                    if(creep.repair(targetRoad) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targetRoad);
                     }
                 }
             }
         }
-    }
+
 };
 
 module.exports = roleRepairer;
