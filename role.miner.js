@@ -24,23 +24,23 @@ var roleMiner = {
             var source = creep.pos.findClosestByPath(FIND_SOURCES);
             if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
 //                creep.moveTo(source);
+
             }
         }
 
 
 
 
-//If full energy, return energy to structures
-//Harvesters will currently put energy into extensions, spawns, and towers.  If those are all full, they will put energy into storage.
+//If full energy, return energy to STORAGE
         else {
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || (structure.structureType == STRUCTURE_TOWER  || structure.structureType == STRUCTURE_LINK && (structure.energy < structure.energyCapacity - 249))
-                        ) &&
-                        structure.energy < structure.energyCapacity;
+                    return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
+                        creep.transfer(target, RESOURCE_ENERGY)
                 }
             });
             if (target == null) {
+//                console.log("k")
                 creep.moveTo(Game.flags.MineStorage);
                 var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
@@ -48,7 +48,7 @@ var roleMiner = {
                     }
                 });
             }
-            
+
 // Move to closest energy container
             if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.flags.MineStorage);

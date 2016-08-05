@@ -1,20 +1,26 @@
 Hunter's Screep Code
 ===========================
-Version 0.16
+Version 0.17
 
 
 
 To do list
 ===========================
-o Use nomad flag code with other traveling creeps.
 o Refine repairers to fully repair instead of repairing to the set threshold.
-o Maybe combining builders with repairers (with repairing getting a priority of course).
-o Unmessify the craziness that is multiple room population control....  I don't know, maybe it's not thaaat bad.
+o Add code for links.
+o Add a setting to turrets so they can be toggled to repair walls when storage is above a threshold.
 
 
 
 History
 ===========================
+
+
+Version 0.17
+8/4
+---------------------------
+- Added white-list for towers.
+- Fixed miners because they were doing weird stuff when dumping energy into storage.
 
 
 Version 0.16

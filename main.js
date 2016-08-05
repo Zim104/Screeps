@@ -15,29 +15,29 @@ var sumRoom = 'all';
 var hCap1 = 3;  //harvester
 var bCap1 = 0;  //builder
 var rCap1 = 1;  //repairer
-var uCap1 = 2;  //upgrader
+var uCap1 = 3;  //upgrader
 var mCap1 = 0;  //miner
 var cCap1 = 0;  //claimer
 var aCap1 = 0;  //attacker
 
 //Room 2 population caps
-var hCap2 = 0;  //harvester
+var hCap2 = 2;  //harvester
 var bCap2 = 0;  //builder
-var rCap2 = 0;  //repairer
-var uCap2 = 1;  //upgrader
-var mCap2 = 0;  //miner
+var rCap2 = 1;  //repairer
+var uCap2 = 3;  //upgrader
+var mCap2 = 3;  //miner
 var cCap2 = 0;  //claimer
 var aCap2 = 0;  //attacker
 
 //Nomad population caps
-var nhCap = 2;  //harvester
-var nbCap = 1;  //builder
+var nhCap = 0;  //harvester
+var nbCap = 0;  //builder
 
 //Turn on tower wall healing?
-var tower1Heal = 1;
-var tower1HealTo = 125000;
+var tower1Heal = 0;
+var tower1HealTo = 400000;
 var tower2Heal = 1;
-var tower2HealTo = 50000;
+var tower2HealTo = 20000;
 
 
 //Name of rooms
@@ -46,6 +46,10 @@ var room2Name = "[room E41S14]";
 
 //How many spawn rooms do you have?
 var spawnrooms = 2;
+
+//Alliance Members
+var allianceMembers = ['GMan', 'Nam', 'Spyingwing', 'Dushinto'];
+
 
 
 //-----SETTINGS-----
@@ -79,7 +83,6 @@ if (Memory.spawnrooms != spawnrooms) {
 
 
 
-
 //The real stuff starts here.
 module.exports.loop = function () {
     for (var name in Memory.creeps) {
@@ -89,7 +92,9 @@ module.exports.loop = function () {
         }
     }
 
-
+//    for (var allianceMembers){
+//        console.log(allianceMembers)
+//    }
 
 
 
@@ -190,7 +195,7 @@ module.exports.loop = function () {
         Memory.cNum++;
     }
     else if (miners1.length < mCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner', bornIn: '1'});
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '1'});
         console.log('[Room1]Spawning new miner: ' + newName);
         Memory.cNum++;
     }
@@ -202,7 +207,7 @@ module.exports.loop = function () {
     }
 
     else if (attackers1.length < aCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE], 'A' + Memory.cNum, {role: 'attacker', bornIn: '1'});
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE], 'A' + Memory.cNum, {role: 'attacker', bornIn: '1'});
         console.log('[Room1]Spawning new attacker: ' + newName);
         Memory.cNum++;
     }
@@ -216,7 +221,7 @@ module.exports.loop = function () {
 //If spawn is in room2, then spawn things like this...
     if (Memory.spawnrooms == 2){
         if (harvesters2.length < hCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, MOVE], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
             console.log('[Room2]Spawning new harvester: ' + newName);
             Memory.cNum2++;
             Memory.failSafe2--;
@@ -227,12 +232,12 @@ module.exports.loop = function () {
             }
         }
         else if (builders2.length < bCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
             console.log('[Room2]Spawning new builder: ' + newName);
             Memory.cNum2++;
         }
         else if (repairers2.length < rCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, MOVE], 'R' + Memory.cNum2, {role: 'repairer', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'R' + Memory.cNum2, {role: 'repairer', bornIn: '2'});
             console.log('[Room2]Spawning new repairer: ' + newName);
             Memory.cNum2++;
         }
@@ -242,7 +247,7 @@ module.exports.loop = function () {
             Memory.cNum2++;
         }
         else if (miners2.length < mCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, MOVE], 'M' + Memory.cNum2, {role: 'miner', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum2, {role: 'miner', bornIn: '2'});
             console.log('[Room2]Spawning new miner: ' + newName);
             Memory.cNum2++;
         }
@@ -254,7 +259,7 @@ module.exports.loop = function () {
         }
 
         else if (attackers2.length < aCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2'});
             console.log('[Room2]Spawning new attacker: ' + newName);
             Memory.cNum2++;
         }
@@ -265,9 +270,9 @@ module.exports.loop = function () {
         }
     }
 
-//Nomad mode
+//Nomads
     if (nomadsH.length < nhCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'NH' + Memory.cNum, {
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum, {
             role: 'harvester',
             bornIn: 'nomad',
             goFlag: '1'
@@ -276,7 +281,7 @@ module.exports.loop = function () {
         Memory.cNum++;
     }
     else if (nomadsB.length < nbCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'NB' + Memory.cNum, {
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum, {
             role: 'builder',
             bornIn: 'nomad',
             goFlag: '1'
@@ -316,16 +321,23 @@ module.exports.loop = function () {
 
 
 
-
-//Gotta be a better way to do towers and not call on them one room at a time....
 //Tower Defense Room 1
     var towers1 = Room1.find(FIND_STRUCTURES, {
         filter: (s) => s.structureType == STRUCTURE_TOWER
     });
     for (let tower1 of towers1) {
-        var targetTower2 = tower1.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if (targetTower2 != undefined) {
-            tower1.attack(targetTower2);
+        var targetTower1 = tower1.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+
+//Code to detect allies
+        ally = 0;
+        for (i=0; i < allianceMembers.length;i++){
+            if (targetTower1 != undefined && targetTower1.owner.username == allianceMembers[i]){
+                ally = 1;
+            }
+        }
+
+        if (targetTower1 != undefined && ally == 0) {
+            tower1.attack(targetTower1);
             Game.notify("Room1 Tower has spotted enemies!")
             console.log("[Room1]ENEMY SIGHTED!")
         }
@@ -346,7 +358,16 @@ module.exports.loop = function () {
     });
     for (let tower2 of towers2) {
         var targetTower2 = tower2.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if (targetTower2 != undefined) {
+
+//Code to detect allies
+        ally = 0;
+        for (i=0; i < allianceMembers.length;i++){
+            if (targetTower2 != undefined && targetTower1.owner.username == allianceMembers[i]){
+                ally = 1;
+            }
+        }
+
+        if (targetTower2 != undefined && ally == 0) {
             tower2.attack(targetTower2);
             Game.notify("Room2 Tower has spotted enemies!")
             console.log("[Room2]ENEMY SIGHTED!")
@@ -361,7 +382,6 @@ module.exports.loop = function () {
             }
         }
     }
-
 }
 
 
