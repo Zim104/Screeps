@@ -56,51 +56,47 @@ var roleRepairer = {
 //Not enough energy to repair
 //            }
 //        }
+        if (creep.memory.return == "return")
+        {
+            if (creep.carry.energy !== 0) {
 
-        if (creep.carry.energy !== 0) {
-
-        }
-
-        // Get energy from sources?
-        else if(getFrom=="sources") {
-            var sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
             }
-        }
+
+            // Get energy from sources?
+            else if(getFrom=="sources") {
+                var sources = creep.room.find(FIND_SOURCES);
+                if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[0]);
+                }
+            }
 
 // Get energy from storage?
-        else if(getFrom=="storage") {
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+            else if(getFrom=="storage") {
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                    }
+                });
+                if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
                 }
-            });
-            if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
             }
-        }
+
 // Get energy from spawn?
-        else if(getFrom=="spawn"){
-            var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
-            creep.moveTo(spwn);
-            if((spwn.energy) > [0]) {
-                spwn.transferEnergy(creep);
-            }
-            else {
+            else if(getFrom=="spawn"){
+                var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+                creep.moveTo(spwn);
+                if((spwn.energy) > [0]) {
+                    spwn.transferEnergy(creep);
+                }
+                else {
 
+                }
             }
         }
-
-
-
-
-
-
-
 
 //repair walls
-        if (wallRep == true) {
+        else if (wallRep == true) {
             var targetWall = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_WALL
@@ -114,10 +110,8 @@ var roleRepairer = {
             }
         }
 
-
-
-//repair roads
-        if (roadRep == true) {
+        //repair roads
+        else if (roadRep == true) {
             var repRoad = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: function (object) {
                     if (object.structureType == STRUCTURE_ROAD & object.hits < object.hitsMax / roadRepStart) {
@@ -148,8 +142,10 @@ var roleRepairer = {
                     }
                 }
             }
+        if (creep.carry.energy == 0){
+            creep.memory.return = "return";
         }
-
+    }
 };
 
 module.exports = roleRepairer;

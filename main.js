@@ -24,10 +24,10 @@ var aCap1 = 0;  //attacker
 var hCap2 = 2;  //harvester
 var bCap2 = 0;  //builder
 var rCap2 = 1;  //repairer
-var uCap2 = 3;  //upgrader
+var uCap2 = 4;  //upgrader
 var mCap2 = 3;  //miner
 var cCap2 = 0;  //claimer
-var aCap2 = 0;  //attacker
+var aCap2 = 1;  //attacker
 
 //Nomad population caps
 var nhCap = 0;  //harvester
@@ -37,7 +37,7 @@ var nbCap = 0;  //builder
 var tower1Heal = 0;
 var tower1HealTo = 400000;
 var tower2Heal = 1;
-var tower2HealTo = 20000;
+var tower2HealTo = 50000;
 
 
 //Name of rooms
@@ -226,7 +226,7 @@ module.exports.loop = function () {
             Memory.cNum2++;
             Memory.failSafe2--;
             console.log('[Room2]Defcon countdown: ' + Memory.failSafe2);
-            if (Memory.failSafe < 1) {
+            if (Memory.failSafe2 < 1) {
                 var newName = Game.spawns['Spawn2'].createCreep([WORK, CARRY, MOVE], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
                 console.log('[Room2]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
             }
@@ -259,7 +259,7 @@ module.exports.loop = function () {
         }
 
         else if (attackers2.length < aCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([MOVE], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2'});
             console.log('[Room2]Spawning new attacker: ' + newName);
             Memory.cNum2++;
         }
@@ -336,7 +336,7 @@ module.exports.loop = function () {
             }
         }
 
-        if (targetTower1 != undefined && ally == 0) {
+        if (targetTower1 != undefined) {
             tower1.attack(targetTower1);
             Game.notify("Room1 Tower has spotted enemies!")
             console.log("[Room1]ENEMY SIGHTED!")
@@ -367,7 +367,7 @@ module.exports.loop = function () {
             }
         }
 
-        if (targetTower2 != undefined && ally == 0) {
+        if (targetTower2 != undefined) {
             tower2.attack(targetTower2);
             Game.notify("Room2 Tower has spotted enemies!")
             console.log("[Room2]ENEMY SIGHTED!")
