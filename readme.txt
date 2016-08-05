@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.17
+Version 0.17a
 
 
 
@@ -14,6 +14,12 @@ o Add a setting to turrets so they can be toggled to repair walls when storage i
 
 History
 ===========================
+
+
+Version 0.17a
+8/4
+---------------------------
+- More settings for repairers, and fixes to undiscovered broken repairerer code.
 
 
 Version 0.17
