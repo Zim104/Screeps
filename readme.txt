@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.17b
+Version 0.17c
 
 
 
@@ -14,6 +14,11 @@ o Add a setting to turrets so they can be toggled to repair walls when storage i
 
 History
 ===========================
+
+Version 0.17c
+8/5
+---------------------------
+- Emergy fix that actually fixes the towers for real.  No more colony collapse syndrome, thank you.
 
 
 Version 0.17b

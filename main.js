@@ -24,7 +24,7 @@ var aCap1 = 0;  //attacker
 var hCap2 = 2;  //harvester
 var bCap2 = 0;  //builder
 var rCap2 = 1;  //repairer
-var uCap2 = 4;  //upgrader
+var uCap2 = 6;  //upgrader
 var mCap2 = 3;  //miner
 var cCap2 = 0;  //claimer
 var aCap2 = 1;  //attacker
@@ -34,10 +34,10 @@ var nhCap = 0;  //harvester
 var nbCap = 0;  //builder
 
 //Turn on tower wall healing?
-var tower1Heal = 0;
-var tower1HealTo = 400000;
+var tower1Heal = 1;
+var tower1HealTo = 125000;
 var tower2Heal = 1;
-var tower2HealTo = 50000;
+var tower2HealTo = 1000;
 
 
 //Name of rooms
@@ -190,7 +190,7 @@ module.exports.loop = function () {
         Memory.cNum++;
     }
     else if (upgraders1.length < uCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'U' + Memory.cNum, {role: 'upgrader', bornIn: '1'});
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY], 'U' + Memory.cNum, {role: 'upgrader', bornIn: '1'});
         console.log('[Room1]Spawning new upgrader: ' + newName);
         Memory.cNum++;
     }
@@ -362,7 +362,7 @@ module.exports.loop = function () {
 //Code to detect allies
         ally = 0;
         for (i=0; i < allianceMembers.length;i++){
-            if (targetTower2 != undefined && targetTower1.owner.username == allianceMembers[i]){
+            if (targetTower2 != undefined && targetTower2.owner.username == allianceMembers[i]){
                 ally = 1;
             }
         }
