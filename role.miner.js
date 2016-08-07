@@ -32,13 +32,23 @@ var roleMiner = {
 
 
 //If full energy, return energy to STORAGE
-        else {
+
+        else{
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
-                        creep.transfer(target, RESOURCE_ENERGY)
+                    return (structure.structureType == STRUCTURE_LINK) && structure.energy < structure.energyCapacity;
+                    creep.transfer(target, RESOURCE_ENERGY)
                 }
             });
+            if (target == null) {
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
+                        creep.transfer(target, RESOURCE_ENERGY)
+                    }
+                });
+            }
+
             if (target == null) {
 //                console.log("k")
                 creep.moveTo(Game.flags.MineStorage);

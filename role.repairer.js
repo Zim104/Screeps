@@ -21,10 +21,10 @@ var roadRep = 1;
 var roadRepStart = 1.2;
 
 //Turn on Structure repair?
-var structureRep = 0;
+var structureRep = 1;
 
 //Max structure hits heal?
-var structureRepHits = 350000;
+var structureRepHits = 50000;
 
 //-----SETTINGS-----
 
@@ -58,7 +58,9 @@ var roleRepairer = {
 //        }
         if (creep.memory.return == "return")
         {
-            if (creep.carry.energy !== 0) {
+            if(creep.carry.energy == creep.carryCapacity) {
+//                console.log("HEY DEBUG")
+                creep.memory.return = "repair";
 
             }
 
@@ -110,7 +112,7 @@ var roleRepairer = {
             }
         }
 
-        //repair roads
+//repair roads
         else if (roadRep == true) {
             var repRoad = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: function (object) {

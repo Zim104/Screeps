@@ -4,10 +4,14 @@
 var getFromRoom1="storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2="spawn";
+var getFromRoom2="storage";
 
 //Nomads get energy from where?
-var getFromNomad="spawn"
+var getFromNomad="storage"
+
+//Construct closest or first?
+var constructDistance="closest"
+
 
 //-----SETTINGS-----
 
@@ -43,17 +47,25 @@ var roleBuilder = {
 	    }
 
 	    if(creep.memory.building) {
-	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-            if(targets.length) {
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+	        if (constructDistance=="closest") {
+	            var targets = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+                if(creep.build(targets) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets);
                 }
-            }
+	        } 
+	        else if (constructDistance=="first") {
+	            var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+                if(targets.length) {
+                    if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0]);
+                    }
+                }
+	        }
 	    }
 
         else if (creep.memory.goFlag == "1"){
-            creep.moveTo(Game.flags.Nomads)
-            if (creep.pos.inRangeTo(Game.flags.Nomads, 5) == '1') {
+            creep.moveTo(Game.flags.NomadsB)
+            if (creep.pos.inRangeTo(Game.flags.NomadsB, 5) == '1') {
                 creep.memory.goFlag ="0"
                 console.log("Clearing goflag")
             }

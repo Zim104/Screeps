@@ -4,6 +4,7 @@ var roleAttacker = {
 
 
     run: function(creep) {
+        creep.moveTo(Game.flags.Attackers)
         var enemies= creep.room.find(Game.HOSTILE_CREEPS);
         if (creep.attack(enemies[0]) == -7) {
             creep.moveTo(Game.flags.Attackers)

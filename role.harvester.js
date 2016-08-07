@@ -16,8 +16,8 @@ var roleHarvester = {
 //Nomad flag mode first
 	    if(creep.memory.return == false) {
 	        if (creep.memory.goFlag == "1"){
-	            creep.moveTo(Game.flags.Nomads)
-                if (creep.pos.inRangeTo(Game.flags.Nomads, 5) == '1') {
+	            creep.moveTo(Game.flags.NomadsH)
+                if (creep.pos.inRangeTo(Game.flags.NomadsH, 5) == '1') {
                     creep.memory.goFlag ="0"
                     console.log("Clearing goflag")
                 }
@@ -25,11 +25,27 @@ var roleHarvester = {
 //Find sources
             else {
                 var source = creep.pos.findClosestByPath(FIND_SOURCES);
+                if (creep.moveTo(source) == -7){
+                    var sourceAccess = false;
+                }
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }
+//If they have no access to the source (blocked) then get some energy from storage in order to feed towers, links, extensions
+                if (sourceAccess == false){
+                    var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                        }
+                    });
+                    if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target);
+                    }
+                }
             }
         }
+
+
 
 //If full energy, return energy to structures
 //Harvesters will currently put energy into extensions, spawns, and towers.  If those are all full, they will put energy into storage.

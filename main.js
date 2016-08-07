@@ -13,7 +13,7 @@ var sumRoom = 'all';
 
 //Room 1 population caps
 var hCap1 = 3;  //harvester
-var bCap1 = 0;  //builder
+var bCap1 = 1;  //builder
 var rCap1 = 1;  //repairer
 var uCap1 = 3;  //upgrader
 var mCap1 = 0;  //miner
@@ -24,9 +24,9 @@ var aCap1 = 0;  //attacker
 var hCap2 = 2;  //harvester
 var bCap2 = 0;  //builder
 var rCap2 = 1;  //repairer
-var uCap2 = 6;  //upgrader
-var mCap2 = 3;  //miner
-var cCap2 = 0;  //claimer
+var uCap2 = 3;  //upgrader
+var mCap2 = 4;  //miner
+var cCap2 = 1;  //claimer
 var aCap2 = 1;  //attacker
 
 //Nomad population caps
@@ -37,8 +37,11 @@ var nbCap = 0;  //builder
 var tower1Heal = 1;
 var tower1HealTo = 125000;
 var tower2Heal = 1;
-var tower2HealTo = 1000;
+var tower2HealTo = 100000;
 
+//Towers will only heal if storage is higher than this amount of energy
+var tower1HealStores = 100000;
+var tower2HealStores = 100000;
 
 //Name of rooms
 var room1Name = "[room E41S13]";
@@ -180,7 +183,7 @@ module.exports.loop = function () {
         }
     }
     else if (builders1.length < bCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE], 'B' + Memory.cNum, {role: 'builder', bornIn: '1'});
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'B' + Memory.cNum, {role: 'builder', bornIn: '1'});
         console.log('[Room1]Spawning new builder: ' + newName);
         Memory.cNum++;
     }
@@ -253,7 +256,7 @@ module.exports.loop = function () {
         }
 
         else if (claimers2.length < cCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([CLAIM, MOVE, MOVE], 'C' + Memory.cNum2, {role: 'claimer', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([CLAIM, CLAIM, MOVE, MOVE], 'C' + Memory.cNum2, {role: 'claimer', bornIn: '2'});
             console.log('[Room2]Spawning new claimer: ' + newName);
             Memory.cNum2++;
         }
@@ -320,7 +323,18 @@ module.exports.loop = function () {
     }
 
 
-
+//Shuts off tower healing if energy storage is not enough
+    var storage1 = Room1.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > tower1HealStores)
+        }
+    });
+    if (storage1 == ""){
+        tower1HealShutoff = 1
+    }
+    else {
+        tower1HealShutoff = 0
+    }
 //Tower Defense Room 1
     var towers1 = Room1.find(FIND_STRUCTURES, {
         filter: (s) => s.structureType == STRUCTURE_TOWER
@@ -342,7 +356,7 @@ module.exports.loop = function () {
             console.log("[Room1]ENEMY SIGHTED!")
         }
 //Tower Healing
-        else if(tower1Heal == 1) {
+        else if(tower1Heal == 1 && tower1HealShutoff !== 1) {
             var closestDamagedStructure = tower1.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower1HealTo && structure.hits != structure.hitsMax
             });
@@ -352,6 +366,24 @@ module.exports.loop = function () {
         }
     }
 
+
+
+
+
+
+
+//Shuts off tower healing if energy storage is not enough
+    var storage2 = Room2.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > tower2HealStores)
+        }
+    });
+    if (storage2 == ""){
+        tower2HealShutoff = 1
+    }
+    else {
+        tower2HealShutoff = 0
+    }
 //Tower Defense Room 2
     var towers2 = Room2.find(FIND_STRUCTURES, {
         filter: (s) => s.structureType == STRUCTURE_TOWER
@@ -373,7 +405,7 @@ module.exports.loop = function () {
             console.log("[Room2]ENEMY SIGHTED!")
         }
 //Tower Healing
-        else if(tower2Heal == 1) {
+        else if(tower2Heal == 1 && tower2HealShutoff !== 1) {
             var closestDamagedStructure = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower2HealTo && structure.hits != structure.hitsMax
             });

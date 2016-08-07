@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.17c
+Version 0.18
 
 
 
@@ -8,12 +8,22 @@ To do list
 ===========================
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Add code for links.
-o Add a setting to turrets so they can be toggled to repair walls when storage is above a threshold.
+o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz fix.
 
 
 
 History
 ===========================
+
+Version 0.18
+8/6
+---------------------------
+- If a source is blocked (by another harvester for example), then the harvester will go to storage and gather energy to distribute to extensions and towers.  Less downtime for harvesters especially in rooms with not much source access.
+- Miners will drop off energy at links
+- Upgraders will now take energy from links
+- Link transferring to other links is not currently coded
+- Added a storage threshold for tower healing.  If it's set at 100000, then towers will not heal walls if energy storage is less than 100000
+
 
 Version 0.17c
 8/5

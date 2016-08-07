@@ -4,7 +4,7 @@
 var getFromRoom1="storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2="spawn";
+var getFromRoom2="storage";
 
 //-----SETTINGS-----
 
@@ -61,15 +61,36 @@ var roleUpgrader = {
         }
 
 
-// Get energy from storage?        
+// Get energy from storage?
+
+
+
+
         else if(getFrom=="storage") {
+
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                    return (structure.structureType == STRUCTURE_LINK) && structure.energy > 0;
                 }
             });
-            if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
+            if (target !== null) {
+                if (creep.pos.inRangeTo(target, 5)){
+                    creep.moveTo(target);
+                    target.transferEnergy(creep)
+                }
+                else {
+                    var tooFar = true;
+                }
+            }
+            else if (tooFar == true){
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                    }
+                });
+                if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
             }
         }
 	}
