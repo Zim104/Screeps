@@ -31,8 +31,26 @@ var roleHarvester = {
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }
-//If they have no access to the source (blocked) then get some energy from storage in order to feed towers, links, extensions
-                if (sourceAccess == false){
+
+                if (creep.memory.dropOff == 1) {
+                    var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                        }
+                    });
+                    if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target);
+                    }
+                    else {
+                        (creep.memory.dropOff = 0)
+                        console.log("Setting dropOff to 0")
+                    }
+
+                }
+
+
+                //If they have no access to the source (blocked) then get some energy from storage in order to feed towers, links, extensions
+                else if (sourceAccess == false){
                     var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || (structure.structureType == STRUCTURE_TOWER && (structure.energy < structure.energyCapacity - 249))
@@ -49,6 +67,29 @@ var roleHarvester = {
                         if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
                         }
+                    }
+//If there are no extensions, spawns, or towers that need energy, then get some energy from a nearby receiver link and put it in storage
+//This is REALLY specific but greatly helps my current room 2.
+                    else if (target == null){
+
+
+                        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_LINK) && structure.energy >= creep.carryCapacity;
+                            }
+                        });
+                        if (target !== null) {
+                            if (creep.pos.inRangeTo(target, 7) == 1){
+                                creep.moveTo(target);
+                                if (target.transferEnergy(creep) !== -9){
+                                    creep.memory.dropOff = 1;
+                                    console.log("Setting dropOff to 1")
+                                }
+                            }
+                        }
+
+
+
                     }
                 }
             }
@@ -67,7 +108,7 @@ var roleHarvester = {
                     }
                 });
 //If extensions, spawns, & towers are good, put energy in links if they arent too far away
-            if (target == null) {
+            if (target == null && creep.memory.dropOff !== 1) {
                 var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_LINK) && structure.energy < structure.energyCapacity;

@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.19
+Version 0.19a
 
 
 
@@ -8,11 +8,19 @@ To do list
 ===========================
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz fix.
+o Clean up cpu usage by using less pathfinding.
 
 
 
 History
 ===========================
+
+
+Version 0.19a
+8/7
+---------------------------
+- Link code adjusted
+- Oddly specific harvester code dealing with instances where harvesters don't have access to a source - if a nearby receiver link has over 400 energy, they can bring it back to the storage.  I said it was specific.
 
 
 Version 0.19
