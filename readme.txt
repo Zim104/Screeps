@@ -1,11 +1,12 @@
 Hunter's Screep Code
 ===========================
-Version 0.18
+Version 0.18a
 
 
 
 To do list
 ===========================
+o Harvesters need to deposit into links
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Add code for links.
 o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz fix.
@@ -14,6 +15,12 @@ o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz 
 
 History
 ===========================
+
+Version 0.18a
+8/6
+---------------------------
+- Emergency upgrader fix.  They weren't going to storage ever.
+
 
 Version 0.18
 8/6
