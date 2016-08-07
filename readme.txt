@@ -1,20 +1,29 @@
 Hunter's Screep Code
 ===========================
-Version 0.18a
+Version 0.19
 
 
 
 To do list
 ===========================
-o Harvesters need to deposit into links
 o Refine repairers to fully repair instead of repairing to the set threshold.
-o Add code for links.
 o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz fix.
 
 
 
 History
 ===========================
+
+
+Version 0.19
+8/7
+---------------------------
+- Link code added
+- Harvesters now deposit into links if they are close enough.
+- Moved settings and variables to the main loop.  Does bad things when they aren't there.
+- Fixed issues with miners where they weren't dropping off to storage.
+- Fixed upgraders logic when looking for link energy sources.  Must be within a certain range.
+
 
 Version 0.18a
 8/6
@@ -26,10 +35,10 @@ Version 0.18
 8/6
 ---------------------------
 - If a source is blocked (by another harvester for example), then the harvester will go to storage and gather energy to distribute to extensions and towers.  Less downtime for harvesters especially in rooms with not much source access.
-- Miners will drop off energy at links
-- Upgraders will now take energy from links
-- Link transferring to other links is not currently coded
-- Added a storage threshold for tower healing.  If it's set at 100000, then towers will not heal walls if energy storage is less than 100000
+- Miners will drop off energy at links.
+- Upgraders will now take energy from links.
+- Link transferring to other links is not currently coded.
+- Added a storage threshold for tower healing.  If it's set at 100000, then towers will not heal walls if energy storage is less than 100000.
 
 
 Version 0.17c

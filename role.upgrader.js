@@ -74,7 +74,7 @@ var roleUpgrader = {
                 }
             });
             if (target !== null) {
-                if (creep.pos.inRangeTo(target, 5)){
+                if (creep.pos.inRangeTo(target, 5) == 1){
                     creep.moveTo(target);
                     target.transferEnergy(creep)
                 }

@@ -37,14 +37,19 @@ var roleMiner = {
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_LINK) && structure.energy < structure.energyCapacity;
-                    creep.transfer(target, RESOURCE_ENERGY)
                 }
             });
+
+            if (creep.transfer(target, RESOURCE_ENERGY) == -9) {
+                target = null;
+            }
+
             if (target == null) {
                 var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                         creep.transfer(target, RESOURCE_ENERGY)
+                        console.log("attempting to deposit into storage")
                     }
                 });
             }

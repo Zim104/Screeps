@@ -35,11 +35,20 @@ var roleHarvester = {
                 if (sourceAccess == false){
                     var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                            return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || (structure.structureType == STRUCTURE_TOWER && (structure.energy < structure.energyCapacity - 249))
+                                ) &&
+                                structure.energy < structure.energyCapacity;
                         }
                     });
-                    if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target);
+                    if (target !== null) {
+                        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                            }
+                        });
+                        if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target);
+                        }
                     }
                 }
             }
@@ -57,12 +66,35 @@ var roleHarvester = {
                     structure.energy < structure.energyCapacity;
                     }
                 });
+//If extensions, spawns, & towers are good, put energy in links if they arent too far away
+            if (target == null) {
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_LINK) && structure.energy < structure.energyCapacity;
+                        creep.transfer(target, RESOURCE_ENERGY)
+                    }
+                });
+                if (target !== null){
+                    if (creep.pos.inRangeTo(target, 4) !== false){
+                        creep.moveTo(target);
+//                        console.log(creep.name + " Going to link")
+//                        console.log(creep.pos.inRangeTo(target, 2))
+//                        target.transferEnergy(creep)
+                    }
+                    else {
+                        target = null
+                    }
+                }
+            }
             if (target == null) {
                   var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                     }
                 });
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
             }
 // Move to closest energy container
             if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -73,3 +105,6 @@ var roleHarvester = {
 };
 
 module.exports = roleHarvester;
+
+
+

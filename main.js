@@ -1,91 +1,3 @@
-//-----SETTINGS-----
-
-//Note, dynamic spawning will not work properly in a new room.  You will need to manually update the creep body parts below
-//This will be fixed in a later version
-
-//Set username
-var userName = "Zim";
-
-//Show summary on tick?  If so, which room?  ('all' or 'nomads' are a valid sumRoom)
-var showSum = 0;
-var sumRoom = 'all';
-
-
-//Room 1 population caps
-var hCap1 = 3;  //harvester
-var bCap1 = 1;  //builder
-var rCap1 = 1;  //repairer
-var uCap1 = 3;  //upgrader
-var mCap1 = 0;  //miner
-var cCap1 = 0;  //claimer
-var aCap1 = 0;  //attacker
-
-//Room 2 population caps
-var hCap2 = 2;  //harvester
-var bCap2 = 0;  //builder
-var rCap2 = 1;  //repairer
-var uCap2 = 3;  //upgrader
-var mCap2 = 4;  //miner
-var cCap2 = 1;  //claimer
-var aCap2 = 1;  //attacker
-
-//Nomad population caps
-var nhCap = 0;  //harvester
-var nbCap = 0;  //builder
-
-//Turn on tower wall healing?
-var tower1Heal = 1;
-var tower1HealTo = 125000;
-var tower2Heal = 1;
-var tower2HealTo = 100000;
-
-//Towers will only heal if storage is higher than this amount of energy
-var tower1HealStores = 100000;
-var tower2HealStores = 100000;
-
-//Name of rooms
-var room1Name = "[room E41S13]";
-var room2Name = "[room E41S14]";
-
-//How many spawn rooms do you have?
-var spawnrooms = 2;
-
-//Alliance Members
-var allianceMembers = ['GMan', 'Nam', 'Spyingwing', 'Dushinto'];
-
-
-
-//-----SETTINGS-----
-
-
-//Inject some memory for starting rooms
-if (Memory.firstRun == null) {
-    Memory.cNum = 1;
-    Memory.cNum2 = 1;
-    Memory.failSafe1 = 250;
-    Memory.failSafe2 = 250;
-    Memory.firstRun = 1;
-    Memory.spawnrooms = 1;
-}
-
-if (Memory.room1Name == null){
-    Memory.room1Name = room1Name;
-}
-
-if (room2Name != null) {
-    Memory.room2Name = room2Name;
-}
-
-if (Memory.spawnrooms != spawnrooms) {
-    Memory.spawnrooms = spawnrooms;
-}
-
-
-
-
-
-
-
 //The real stuff starts here.
 module.exports.loop = function () {
     for (var name in Memory.creeps) {
@@ -95,9 +7,97 @@ module.exports.loop = function () {
         }
     }
 
-//    for (var allianceMembers){
-//        console.log(allianceMembers)
-//    }
+//-----SETTINGS-----
+
+//Note, dynamic spawning will not work properly in a new room.  You will need to manually update the creep body parts below
+//This will be fixed in a later version
+
+//Set username
+    var userName = "Zim";
+
+//Show summary on tick?  If so, which room?  ('all' or 'nomads' are a valid sumRoom)
+    var showSum = 0;
+    var sumRoom = 'all';
+
+//Room 1 population caps
+    var hCap1 = 3;  //harvester
+    var bCap1 = 1;  //builder
+    var rCap1 = 1;  //repairer
+    var uCap1 = 2;  //upgrader
+    var mCap1 = 0;  //miner
+    var cCap1 = 0;  //claimer
+    var aCap1 = 0;  //attacker
+
+//Room 2 population caps
+    var hCap2 = 2;  //harvester
+    var bCap2 = 0;  //builder
+    var rCap2 = 1;  //repairer
+    var uCap2 = 5;  //upgrader
+    var mCap2 = 4;  //miner
+    var cCap2 = 1;  //claimer
+    var aCap2 = 1;  //attacker
+
+//Nomad population caps
+    var nhCap = 0;  //harvester
+    var nbCap = 0;  //builder
+
+//Turn on tower wall healing?
+    var tower1Heal = 1;
+    var tower1HealTo = 400000;
+    var tower2Heal = 1;
+    var tower2HealTo = 200000;
+
+//Towers will only heal if storage is higher than this amount of energy
+    var tower1HealStores = 100000;
+    var tower2HealStores = 100000;
+
+//Name of rooms
+    var room1Name = "[room E41S13]";
+    var room2Name = "[room E41S14]";
+
+//Deposit Links and TransferTo Links
+    var senderLink1 = Game.getObjectById('57a67f8222bb9fd753d28d39');
+    var receiverLink1 = Game.getObjectById('579ce693eebe391d28db5ad3');
+    var senderLink2 = Game.getObjectById('57a63d55b69bb6ed4c388e63');
+    var receiverLink2 = Game.getObjectById('57a61e031d5b55a61ab1aac3');
+
+//How many spawn rooms do you have?
+    var spawnrooms = 2;
+
+//Alliance Members
+    var allianceMembers = ['GMan', 'Nam', 'Spyingwing', 'Dushinto'];
+
+
+
+//-----SETTINGS-----
+
+
+
+
+
+//Inject some memory for starting rooms
+    if (Memory.firstRun == null) {
+        Memory.cNum = 1;
+        Memory.cNum2 = 1;
+        Memory.failSafe1 = 250;
+        Memory.failSafe2 = 250;
+        Memory.firstRun = 1;
+        Memory.spawnrooms = 1;
+    }
+    if (Memory.room1Name == null){
+        Memory.room1Name = room1Name;
+    }
+    if (room2Name != null) {
+        Memory.room2Name = room2Name;
+    }
+    if (Memory.spawnrooms != spawnrooms) {
+        Memory.spawnrooms = spawnrooms;
+    }
+
+
+
+
+
 
 
 
@@ -323,6 +323,45 @@ module.exports.loop = function () {
     }
 
 
+
+//Link Room 1
+    var link1Cooldown = senderLink1.cooldown;
+    if (senderLink1.energy > 0){
+        if (link1Cooldown == "0"){
+            if (senderLink1.energy < receiverLink1.energyCapacity - receiverLink1.energy){
+                senderLink1.transferEnergy(receiverLink1, senderLink1.energy)
+                console.log("Sender 1 attempting to send all it's got")
+            }
+            else {
+                senderLink1.transferEnergy(receiverLink1, receiverLink1.energyCapacity - receiverLink1.energy);
+                console.log("Sender 1 attempting to cap off")
+            }
+        }
+    }
+
+//Link Room 2
+    var link2Cooldown = senderLink2.cooldown;
+    if (senderLink2.energy > 0){
+        if (senderLink2.cooldown == "0"){
+            if (senderLink2.energy < receiverLink2.energyCapacity - receiverLink2.energy){
+                console.log("Sender 2 attempting to send all it's got")
+                senderLink2.transferEnergy(receiverLink2, senderLink2.energy)
+            }
+            else {
+                console.log("Sender 2 attempting to cap off")
+                senderLink2.transferEnergy(receiverLink2, receiverLink2.energyCapacity - receiverLink2.energy);
+            }
+        }
+    }
+
+
+//    for (var allianceMembers){
+//        console.log(allianceMembers)
+//    }
+
+
+
+
 //Shuts off tower healing if energy storage is not enough
     var storage1 = Room1.find(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -352,7 +391,7 @@ module.exports.loop = function () {
 
         if (targetTower1 != undefined) {
             tower1.attack(targetTower1);
-            Game.notify("Room1 Tower has spotted enemies!")
+            Game.notify("Room1 Tower has spotted enemies!");
             console.log("[Room1]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -401,16 +440,16 @@ module.exports.loop = function () {
 
         if (targetTower2 != undefined) {
             tower2.attack(targetTower2);
-            Game.notify("Room2 Tower has spotted enemies!")
+            Game.notify("Room2 Tower has spotted enemies!");
             console.log("[Room2]ENEMY SIGHTED!")
         }
 //Tower Healing
         else if(tower2Heal == 1 && tower2HealShutoff !== 1) {
-            var closestDamagedStructure = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+            var closestDamagedStructure2 = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower2HealTo && structure.hits != structure.hitsMax
             });
-            if(closestDamagedStructure && tower2.energy > 700) {
-                tower2.repair(closestDamagedStructure);
+            if(closestDamagedStructure2 && tower2.energy > 700) {
+                tower2.repair(closestDamagedStructure2);
             }
         }
     }
