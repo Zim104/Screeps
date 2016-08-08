@@ -21,7 +21,7 @@ module.exports.loop = function () {
 
 //Room 1 population caps
     var hCap1 = 3;  //harvester
-    var bCap1 = 1;  //builder
+    var bCap1 = 0;  //builder
     var rCap1 = 1;  //repairer
     var uCap1 = 2;  //upgrader
     var mCap1 = 0;  //miner
@@ -32,10 +32,10 @@ module.exports.loop = function () {
     var hCap2 = 2;  //harvester
     var bCap2 = 0;  //builder
     var rCap2 = 1;  //repairer
-    var uCap2 = 5;  //upgrader
-    var mCap2 = 4;  //miner
-    var cCap2 = 1;  //claimer
-    var aCap2 = 1;  //attacker
+    var uCap2 = 3;  //upgrader
+    var mCap2 = 0;  //miner
+    var cCap2 = 0;  //claimer
+    var aCap2 = 2;  //attacker
 
 //Nomad population caps
     var nhCap = 0;  //harvester
@@ -210,7 +210,7 @@ module.exports.loop = function () {
     }
 
     else if (attackers1.length < aCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE], 'A' + Memory.cNum, {role: 'attacker', bornIn: '1'});
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE], 'A' + Memory.cNum, {role: 'attacker', bornIn: '1', goFlag: '1'});
         console.log('[Room1]Spawning new attacker: ' + newName);
         Memory.cNum++;
     }
@@ -235,7 +235,7 @@ module.exports.loop = function () {
             }
         }
         else if (builders2.length < bCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
             console.log('[Room2]Spawning new builder: ' + newName);
             Memory.cNum2++;
         }
@@ -262,7 +262,7 @@ module.exports.loop = function () {
         }
 
         else if (attackers2.length < aCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2', goFlag: '1'});
             console.log('[Room2]Spawning new attacker: ' + newName);
             Memory.cNum2++;
         }

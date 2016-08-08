@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.19a
+Version 0.19b
 
 
 
@@ -14,6 +14,12 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+
+Version 0.19b
+8/7
+---------------------------
+- Adjusted attackers.  Made them work.
 
 
 Version 0.19a
