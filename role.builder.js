@@ -6,8 +6,11 @@ var getFromRoom1="storage";
 //Does room 2 get energy from storage,sources, or spawn?
 var getFromRoom2="storage";
 
+//Does room 3 get energy from storage,sources, or spawn?
+var getFromRoom3="sources";
+
 //Nomads get energy from where?
-var getFromNomad="storage"
+var getFromNomad="sources"
 
 //Construct closest or first?
 var constructDistance="closest"
@@ -31,6 +34,14 @@ var roleBuilder = {
         else if (Memory.spawnrooms == 2){
             if (creep.memory.bornIn == 2) {
                 var getFrom=getFromRoom2;
+            }
+        }
+        else if (Memory.spawnrooms == 3){
+            if (creep.memory.bornIn == 2) {
+                var getFrom=getFromRoom2;
+            }            
+            if (creep.memory.bornIn == 3) {
+                var getFrom=getFromRoom3;
             }
         }
         else if (creep.memory.bornIn == "nomad"){
@@ -73,9 +84,9 @@ var roleBuilder = {
 
 // Get energy from sources?
         else if(getFrom=="sources") {
-            var sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            var source = creep.pos.findClosestByPath(FIND_SOURCES);
+            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
             }
         }
 	    

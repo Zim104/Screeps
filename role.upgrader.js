@@ -6,6 +6,12 @@ var getFromRoom1="storage";
 //Does room 2 get energy from storage,sources, or spawn?
 var getFromRoom2="storage";
 
+//Does room 3 get energy from storage,sources, or spawn?
+var getFromRoom3="spawn";
+
+//Do nomads get energy from storage,sources, or spawn?
+var getFromNomad="sources";
+
 //-----SETTINGS-----
 
 
@@ -23,8 +29,16 @@ var roleUpgrader = {
                 var getFrom=getFromRoom2;
             }
         }
-        else if (creep.memory.bornIn == "nomad"){
-            var getFrom="sources";
+        else if (Memory.spawnrooms == 3){
+            if (creep.memory.bornIn == 2) {
+
+            }            
+            if (creep.memory.bornIn == 3) {
+                var getFrom=getFromRoom3;
+            }
+        }
+        if (creep.memory.bornIn == "nomad"){
+            var getFrom=getFromNomad;
         }
 
         if(creep.memory.upgrading && creep.carry.energy == 0) {
@@ -37,6 +51,15 @@ var roleUpgrader = {
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
+            }
+        }
+
+
+        else if (creep.memory.goFlag == "1"){
+            creep.moveTo(Game.flags.NomadsU)
+            if (creep.pos.inRangeTo(Game.flags.NomadsU, 5) == '1') {
+                creep.memory.goFlag ="0"
+                console.log("Clearing goflag")
             }
         }
 
