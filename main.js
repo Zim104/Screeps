@@ -21,6 +21,7 @@ module.exports.loop = function () {
 
 //Room 1 population caps
     var hCap1 = 3;  //harvester
+    var hbCap1 = 0;  //harvester source 2
     var bCap1 = 0;  //builder
     var rCap1 = 1;  //repairer
     var uCap1 = 2;  //upgrader
@@ -30,34 +31,36 @@ module.exports.loop = function () {
 
 //Room 2 population caps
     var hCap2 = 2;  //harvester
+    var hbCap2 = 0;  //harvester source 2
     var bCap2 = 0;  //builder
     var rCap2 = 1;  //repairer
-    var uCap2 = 1;  //upgrader
+    var uCap2 = 2;  //upgrader
     var mCap2 = 0;  //miner
     var cCap2 = 0;  //claimer
-    var aCap2 = 2;  //attacker
+    var aCap2 = 0;  //attacker
 
 //Room 3 population caps
-    var hCap3 = 0;  //harvester
-    var bCap3 = 0;  //builder
+    var hCap3 = 4;  //harvester
+    var hbCap3 = 4;  //harvester source 2
+    var bCap3 = 2;  //builder
     var rCap3 = 2;  //repairer
-    var uCap3 = 5;  //upgrader
-    var mCap3 = 0;  //miner
+    var uCap3 = 4;  //upgrader
+    var mCap3 = 3;  //miner
     var cCap3 = 0;  //claimer
     var aCap3 = 0;  //attacker
 
 //Nomad population caps
-    var nhCap = 4;  //harvester
-    var nbCap = 3;  //builder
-    var nuCap = 1;  //upgrader
+    var nhCap = 0;  //harvester
+    var nbCap = 2;  //builder
+    var nuCap = 0;  //upgrader
 
 //Turn on tower wall healing?
     var tower1Heal = 1;
-    var tower1HealTo = 500000;
+    var tower1HealTo = 800000;
     var tower2Heal = 1;
-    var tower2HealTo = 700000;
+    var tower2HealTo = 900000;
     var tower3Heal = 1;
-    var tower3HealTo = 5000;
+    var tower3HealTo = 50000;
 
 
 //Towers will only heal if storage is higher than this amount of energy
@@ -138,7 +141,8 @@ module.exports.loop = function () {
     var roleAttacker = require('role.attacker');
 
 //Population monitoring for room1
-    var harvesters1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '1');
+    var harvesters1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '1' && creep.memory.source !== '2');
+    var harvesters1b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '1' && creep.memory.source == '2');
     var builders1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '1');
     var upgraders1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '1');
     var repairers1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '1');
@@ -148,7 +152,8 @@ module.exports.loop = function () {
     var population1 = harvesters1.length + repairers1.length + builders1.length + upgraders1.length + miners1.length + claimers1.length + attackers1.length;
 
 //Population monitoring for room2
-    var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '2');
+    var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '2' && creep.memory.source !== '2');
+    var harvesters2b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '2' && creep.memory.source == '2');
     var builders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '2');
     var upgraders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '2');
     var repairers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '2');
@@ -158,7 +163,8 @@ module.exports.loop = function () {
     var population2 = harvesters2.length + repairers2.length + builders2.length + upgraders2.length + miners2.length + claimers2.length + attackers2.length;
     
 //Population monitoring for room2
-    var harvesters3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '3');
+    var harvesters3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '3' && creep.memory.source !== '2');
+    var harvesters3b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '3' && creep.memory.source == '2');
     var builders3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '3');
     var upgraders3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '3');
     var repairers3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '3');
@@ -217,6 +223,15 @@ module.exports.loop = function () {
             console.log('[Room1]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
         }
     }
+    else if (harvesters1b.length < hbCap1) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'HB' + Memory.cNum1, {
+            role: 'harvester',
+            bornIn: '1',
+            source: '2'
+        });
+        console.log('[Room1]Spawning new harvester b: ' + newName);
+        Memory.cNum1++;
+    }
     else if (builders1.length < bCap1) {
         var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'B' + Memory.cNum, {role: 'builder', bornIn: '1'});
         console.log('[Room1]Spawning new builder: ' + newName);
@@ -257,9 +272,9 @@ module.exports.loop = function () {
 
 
 //If spawn is in room2, then spawn things like this...
-    if (Memory.spawnrooms <= 3){
+    if (Memory.spawnrooms >= 2){
         if (harvesters2.length < hCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
             console.log('[Room2]Spawning new harvester: ' + newName);
             Memory.cNum2++;
             Memory.failSafe2--;
@@ -268,6 +283,15 @@ module.exports.loop = function () {
                 var newName = Game.spawns['Spawn2'].createCreep([WORK, CARRY, MOVE], 'H' + Memory.cNum2, {role: 'harvester', bornIn: '2'});
                 console.log('[Room2]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
             }
+        }
+        else if (harvesters2b.length < hbCap2) {
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'HB' + Memory.cNum2, {
+                role: 'harvester',
+                bornIn: '2',
+                source: '2'
+            });
+            console.log('[Room2]Spawning new harvester b: ' + newName);
+            Memory.cNum2++;
         }
         else if (builders2.length < bCap2) {
             var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum2, {role: 'builder', bornIn: '2'});
@@ -313,9 +337,9 @@ module.exports.loop = function () {
 
 
      //If spawn is in room3, then spawn things like this...
-     if (Memory.spawnrooms <= 3){
+     if (Memory.spawnrooms >= 3){
          if (harvesters3.length < hCap3) {
-             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, CARRY, MOVE], 'H' + Memory.cNum3, {role: 'harvester', bornIn: '3'});
+             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'H' + Memory.cNum3, {role: 'harvester', bornIn: '3'});
              console.log('[Room3]Spawning new harvester: ' + newName);
              Memory.cNum3++;
              Memory.failSafe3--;
@@ -325,13 +349,22 @@ module.exports.loop = function () {
                  console.log('[Room3]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
              }
          }
+         else if (harvesters3b.length < hbCap3) {
+             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'HB' + Memory.cNum3, {
+                 role: 'harvester',
+                 bornIn: '3',
+                 source: '2'
+             });
+             console.log('[Room3]Spawning new harvester b: ' + newName);
+             Memory.cNum3++;
+         }
          else if (builders3.length < bCap3) {
              var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, CARRY, MOVE], 'B' + Memory.cNum3, {role: 'builder', bornIn: '3'});
              console.log('[Room3]Spawning new builder: ' + newName);
              Memory.cNum3++;
          }
          else if (repairers3.length < rCap3) {
-             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, CARRY, MOVE], 'R' + Memory.cNum3, {role: 'repairer', bornIn: '3'});
+             var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'R' + Memory.cNum3, {role: 'repairer', bornIn: '3'});
              console.log('[Room3]Spawning new repairer: ' + newName);
              Memory.cNum3++;
          }

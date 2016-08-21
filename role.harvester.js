@@ -24,30 +24,79 @@ var roleHarvester = {
             }
 //Find sources
             else {
-                var source = creep.pos.findClosestByPath(FIND_SOURCES);
-                if (creep.moveTo(source) == -7){
-                    var sourceAccess = false;
-                }
-                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source);
+                var source = creep.room.find(FIND_SOURCES);
+
+                if (source.length == 1){
+                    if (creep.moveTo(source[0]) == -7){
+                        var sourceAccess = false;
+                    }
+                    if (creep.harvest(source[0]) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(source[0]);
+                    }
+
+                    if (creep.memory.dropOff == 1) {
+                        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                            }
+                        });
+                        if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target);
+                        }
+                        else {
+                            (creep.memory.dropOff = 0)
+                            console.log("Setting dropOff to 0")
+                        }
+                    }
                 }
 
-                if (creep.memory.dropOff == 1) {
-                    var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                else if (source.length == 2){
+                    if(creep.memory.source == 2) {
+                        if (creep.moveTo(source[1]) == -7){
+                            var sourceAccess = false;
                         }
-                    });
-                    if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target);
+                        if (creep.harvest(source[1]) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source[1]);
+                        }
+
+                        if (creep.memory.dropOff == 1) {
+                            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                                filter: (structure) => {
+                                    return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                                }
+                            });
+                            if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(target);
+                            }
+                            else {
+                                (creep.memory.dropOff = 0)
+                                console.log("Setting dropOff to 0")
+                            }
+                        }
                     }
                     else {
-                        (creep.memory.dropOff = 0)
-                        console.log("Setting dropOff to 0")
+                        if (creep.moveTo(source[0]) == -7){
+                            var sourceAccess = false;
+                        }
+                        if (creep.harvest(source[0]) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source[0]);
+                        }
+                        if (creep.memory.dropOff == 1) {
+                            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                                filter: (structure) => {
+                                    return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] != 0)
+                                }
+                            });
+                            if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(target);
+                            }
+                            else {
+                                (creep.memory.dropOff = 0)
+                                console.log("Setting dropOff to 0")
+                            }
+                        }
                     }
-
                 }
-
 
                 //If they have no access to the source (blocked) then get some energy from storage in order to feed towers, links, extensions
                 else if (sourceAccess == false){

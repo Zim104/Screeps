@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.19b
+Version 0.192
 
 
 
@@ -14,6 +14,18 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+Version 0.192
+8/7
+---------------------------
+- Added ability to assign harvesters to source 1 or source 2, for two source rooms.
+
+
+Version 0.191
+8/7
+---------------------------
+- A lot of random things including new nomad types
+- Added support for GCL3
 
 
 Version 0.19b
