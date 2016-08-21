@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.192
+Version 0.193
 
 
 
@@ -15,14 +15,21 @@ o Clean up cpu usage by using less pathfinding.
 History
 ===========================
 
+Version 0.193
+8/21
+---------------------------
+- Renamed miners to explorers
+- Added actual miners to gather minerals
+
+
 Version 0.192
-8/7
+8/21
 ---------------------------
 - Added ability to assign harvesters to source 1 or source 2, for two source rooms.
 
 
 Version 0.191
-8/7
+8/18
 ---------------------------
 - A lot of random things including new nomad types
 - Added support for GCL3

@@ -25,19 +25,21 @@ module.exports.loop = function () {
     var bCap1 = 0;  //builder
     var rCap1 = 1;  //repairer
     var uCap1 = 2;  //upgrader
-    var mCap1 = 0;  //miner
+    var eCap1 = 0;  //explorer
     var cCap1 = 0;  //claimer
     var aCap1 = 0;  //attacker
+    var mCap1 = 0;  //miner
 
 //Room 2 population caps
     var hCap2 = 2;  //harvester
     var hbCap2 = 0;  //harvester source 2
-    var bCap2 = 0;  //builder
+    var bCap2 = 1;  //builder
     var rCap2 = 1;  //repairer
-    var uCap2 = 2;  //upgrader
-    var mCap2 = 0;  //miner
+    var uCap2 = 1;  //upgrader
+    var eCap2 = 0;  //explorer
     var cCap2 = 0;  //claimer
     var aCap2 = 0;  //attacker
+    var mCap2 = 1;  //miner
 
 //Room 3 population caps
     var hCap3 = 4;  //harvester
@@ -45,13 +47,14 @@ module.exports.loop = function () {
     var bCap3 = 2;  //builder
     var rCap3 = 2;  //repairer
     var uCap3 = 4;  //upgrader
-    var mCap3 = 3;  //miner
+    var eCap3 = 3;  //explorer
     var cCap3 = 0;  //claimer
     var aCap3 = 0;  //attacker
+    var mCap3 = 0;  //miner
 
 //Nomad population caps
     var nhCap = 0;  //harvester
-    var nbCap = 2;  //builder
+    var nbCap = 0;  //builder
     var nuCap = 0;  //upgrader
 
 //Turn on tower wall healing?
@@ -78,6 +81,8 @@ module.exports.loop = function () {
     var receiverLink1 = Game.getObjectById('579ce693eebe391d28db5ad3');
     var senderLink2 = Game.getObjectById('57a63d55b69bb6ed4c388e63');
     var receiverLink2 = Game.getObjectById('57a61e031d5b55a61ab1aac3');
+    var senderLink3 = Game.getObjectById('57ba1f2afeace6b85022c5c1');
+    var receiverLink3 = Game.getObjectById('57ba1a9f0ffbd25c5ed01c31');
 
 //How many spawn rooms do you have?
     var spawnrooms = 3;
@@ -136,9 +141,10 @@ module.exports.loop = function () {
     var roleUpgrader = require('role.upgrader');
     var roleBuilder = require('role.builder');
     var roleRepairer = require('role.repairer');
-    var roleMiner = require('role.miner');
+    var roleExplorer = require('role.explorer');
     var roleClaimer = require('role.claimer');
     var roleAttacker = require('role.attacker');
+    var roleMiner = require('role.miner');
 
 //Population monitoring for room1
     var harvesters1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '1' && creep.memory.source !== '2');
@@ -146,10 +152,11 @@ module.exports.loop = function () {
     var builders1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '1');
     var upgraders1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '1');
     var repairers1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '1');
-    var miners1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '1');
+    var explorers1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '1');
     var claimers1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '1');
     var attackers1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '1');
-    var population1 = harvesters1.length + repairers1.length + builders1.length + upgraders1.length + miners1.length + claimers1.length + attackers1.length;
+    var miners1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '1');
+    var population1 = harvesters1.length + repairers1.length + builders1.length + upgraders1.length + explorers1.length + claimers1.length + attackers1.length;
 
 //Population monitoring for room2
     var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '2' && creep.memory.source !== '2');
@@ -157,10 +164,11 @@ module.exports.loop = function () {
     var builders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '2');
     var upgraders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '2');
     var repairers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '2');
-    var miners2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '2');
+    var explorers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '2');
     var claimers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '2');
     var attackers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '2');
-    var population2 = harvesters2.length + repairers2.length + builders2.length + upgraders2.length + miners2.length + claimers2.length + attackers2.length;
+    var miners2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '2');
+    var population2 = harvesters2.length + repairers2.length + builders2.length + upgraders2.length + explorers2.length + claimers2.length + attackers2.length;
     
 //Population monitoring for room2
     var harvesters3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '3' && creep.memory.source !== '2');
@@ -168,10 +176,11 @@ module.exports.loop = function () {
     var builders3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '3');
     var upgraders3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '3');
     var repairers3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '3');
-    var miners3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '3');
+    var explorers3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '3');
     var claimers3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '3');
     var attackers3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '3');
-    var population3 = harvesters3.length + repairers3.length + builders3.length + upgraders3.length + miners3.length + claimers3.length + attackers3.length;    
+    var miners3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '3');
+    var population3 = harvesters3.length + repairers3.length + builders3.length + upgraders3.length + explorers3.length + claimers3.length + attackers3.length;    
 
 //Population monitoring for nomads
     var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
@@ -194,14 +203,14 @@ module.exports.loop = function () {
     if (showSum == true) {
         console.log('-------------------------')
         if (sumRoom == 1){
-            console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + miners1.length + '/' + mCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
+            console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + explorers1.length + '/' + eCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
         }
         else if (sumRoom ==2) {
-            console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + miners2.length + '/' + mCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
+            console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + explorers2.length + '/' + eCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
         }
         else if (sumRoom =="all"){
-            console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + miners1.length + '/' + mCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
-            console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + miners2.length + '/' + mCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
+            console.log('[Room 1]Pop:' + population1 + ' - H:' + harvesters1.length + '/' + hCap1 + ' - R:' + repairers1.length + '/' + rCap1 + ' - B:' + builders1.length + '/' + bCap1 + ' - U:' + upgraders1.length + '/' + uCap1 + ' - M:' + explorers1.length + '/' + eCap1 + ' - A:' + attackers1.length + '/' + aCap1 + ' ......... Enrgy:' + TotalEnergy);
+            console.log('[Room 2]Pop:' + population2 + ' - H:' + harvesters2.length + '/' + hCap2 + ' - R:' + repairers2.length + '/' + rCap2 + ' - B:' + builders2.length + '/' + bCap2 + ' - U:' + upgraders2.length + '/' + uCap2 + ' - M:' + explorers2.length + '/' + eCap2 + ' - A:' + attackers2.length + '/' + aCap2 + ' ......... Enrgy:' + TotalEnergy);
             console.log('[Nomads]Pop:' + populationN + ' - NH:' + nomadsH.length + '/' + nhCap + ' - NB:' + nomadsB.length + '/' + nbCap);
         }
         else if (sumRoom =="nomads"){
@@ -247,9 +256,9 @@ module.exports.loop = function () {
         console.log('[Room1]Spawning new upgrader: ' + newName);
         Memory.cNum++;
     }
-    else if (miners1.length < mCap1) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '1'});
-        console.log('[Room1]Spawning new miner: ' + newName);
+    else if (explorers1.length < eCap1) {
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum, {role: 'explorer', bornIn: '1'});
+        console.log('[Room1]Spawning new explorer: ' + newName);
         Memory.cNum++;
     }
 
@@ -264,7 +273,11 @@ module.exports.loop = function () {
         console.log('[Room1]Spawning new attacker: ' + newName);
         Memory.cNum++;
     }
-
+    else if (miners1.length < mCap1) {
+        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '1'});
+        console.log('[Room1]Spawning new miner: ' + newName);
+        Memory.cNum++;
+    }
     else if (harvesters1.length == hCap1 & Memory.failSafe1 != 250) {
         Memory.failSafe1 = 250;
         console.log('[Room1]Defcon countdown reset to: ' + Memory.failSafe1);
@@ -308,9 +321,9 @@ module.exports.loop = function () {
             console.log('[Room2]Spawning new upgrader: ' + newName);
             Memory.cNum2++;
         }
-        else if (miners2.length < mCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum2, {role: 'miner', bornIn: '2'});
-            console.log('[Room2]Spawning new miner: ' + newName);
+        else if (explorers2.length < eCap2) {
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum2, {role: 'explorer', bornIn: '2'});
+            console.log('[Room2]Spawning new explorer: ' + newName);
             Memory.cNum2++;
         }
 
@@ -323,6 +336,11 @@ module.exports.loop = function () {
         else if (attackers2.length < aCap2) {
             var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum2, {role: 'attacker', bornIn: '2', goFlag: '1'});
             console.log('[Room2]Spawning new attacker: ' + newName);
+            Memory.cNum2++;
+        }
+        else if (miners2.length < mCap2) {
+            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner', bornIn: '2'});
+            console.log('[Room2]Spawning new miner: ' + newName);
             Memory.cNum2++;
         }
 
@@ -373,9 +391,9 @@ module.exports.loop = function () {
              console.log('[Room3]Spawning new upgrader: ' + newName);
              Memory.cNum3++;
          }
-         else if (miners3.length < mCap3) {
-             var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum3, {role: 'miner', bornIn: '3'});
-             console.log('[Room3]Spawning new miner: ' + newName);
+         else if (explorers3.length < eCap3) {
+             var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum3, {role: 'explorer', bornIn: '3'});
+             console.log('[Room3]Spawning new explorer: ' + newName);
              Memory.cNum3++;
          }
     
@@ -388,6 +406,11 @@ module.exports.loop = function () {
          else if (attackers3.length < aCap3) {
              var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum3, {role: 'attacker', bornIn: '3', goFlag: '1'});
              console.log('[Room3]Spawning new attacker: ' + newName);
+             Memory.cNum3++;
+         }
+         else if (miners3.length < mCap3) {
+             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner', bornIn: '3'});
+             console.log('[Room3]Spawning new miner: ' + newName);
              Memory.cNum3++;
          }
     
@@ -451,14 +474,17 @@ module.exports.loop = function () {
         if (creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
         }
-        if (creep.memory.role == 'miner') {
-            roleMiner.run(creep);
+        if (creep.memory.role == 'explorer') {
+            roleExplorer.run(creep);
         }
         if (creep.memory.role == 'claimer') {
             roleClaimer.run(creep);
         }
         if (creep.memory.role == 'attacker') {
             roleAttacker.run(creep);
+        }
+        if (creep.memory.role == 'miner') {
+            roleMiner.run(creep);
         }
     }
 
@@ -490,6 +516,22 @@ module.exports.loop = function () {
             else {
 //                console.log("Sender 2 attempting to cap off")
                 senderLink2.transferEnergy(receiverLink2, receiverLink2.energyCapacity - receiverLink2.energy);
+            }
+        }
+    }
+
+
+//Link Room 3
+    var link3Cooldown = senderLink3.cooldown;
+    if (senderLink3.energy > 0){
+        if (senderLink3.cooldown == "0"){
+            if (senderLink3.energy < receiverLink3.energyCapacity - receiverLink3.energy){
+//                console.log("Sender 2 attempting to send all it's got")
+                senderLink3.transferEnergy(receiverLink3, senderLink3.energy)
+            }
+            else {
+//                console.log("Sender 2 attempting to cap off")
+                senderLink3.transferEnergy(receiverLink3, receiverLink3.energyCapacity - receiverLink3.energy);
             }
         }
     }
