@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.193
+Version 0.194
 
 
 
@@ -14,6 +14,12 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+Version 0.194
+8/24
+---------------------------
+- Added nomad repairers to help maintain external rooms.
+
 
 Version 0.193
 8/21

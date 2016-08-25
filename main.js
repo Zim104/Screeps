@@ -28,12 +28,12 @@ module.exports.loop = function () {
     var eCap1 = 0;  //explorer
     var cCap1 = 0;  //claimer
     var aCap1 = 0;  //attacker
-    var mCap1 = 0;  //miner
+    var mCap1 = 1;  //miner
 
 //Room 2 population caps
     var hCap2 = 2;  //harvester
     var hbCap2 = 0;  //harvester source 2
-    var bCap2 = 1;  //builder
+    var bCap2 = 0;  //builder
     var rCap2 = 1;  //repairer
     var uCap2 = 1;  //upgrader
     var eCap2 = 0;  //explorer
@@ -44,11 +44,11 @@ module.exports.loop = function () {
 //Room 3 population caps
     var hCap3 = 4;  //harvester
     var hbCap3 = 4;  //harvester source 2
-    var bCap3 = 2;  //builder
+    var bCap3 = 0;  //builder
     var rCap3 = 2;  //repairer
     var uCap3 = 4;  //upgrader
-    var eCap3 = 3;  //explorer
-    var cCap3 = 0;  //claimer
+    var eCap3 = 4;  //explorer
+    var cCap3 = 1;  //claimer
     var aCap3 = 0;  //attacker
     var mCap3 = 0;  //miner
 
@@ -56,14 +56,15 @@ module.exports.loop = function () {
     var nhCap = 0;  //harvester
     var nbCap = 0;  //builder
     var nuCap = 0;  //upgrader
+    var nrCap = 1;  //repairer
 
 //Turn on tower wall healing?
     var tower1Heal = 1;
-    var tower1HealTo = 800000;
+    var tower1HealTo = 1300000;
     var tower2Heal = 1;
-    var tower2HealTo = 900000;
+    var tower2HealTo = 1200000;
     var tower3Heal = 1;
-    var tower3HealTo = 50000;
+    var tower3HealTo = 200000;
 
 
 //Towers will only heal if storage is higher than this amount of energy
@@ -186,6 +187,7 @@ module.exports.loop = function () {
     var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
     var nomadsB = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == 'nomad');
     var nomadsU = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == 'nomad');
+    var nomadsR = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == 'nomad');
     var populationN = nomadsH.length + nomadsB.length + nomadsU.length;
 
 //How much energy is available?  Thanks for the code, Dan
@@ -339,7 +341,7 @@ module.exports.loop = function () {
             Memory.cNum2++;
         }
         else if (miners2.length < mCap2) {
-            var newName = Game.spawns['Spawn2'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner', bornIn: '2'});
+            var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '2'});
             console.log('[Room2]Spawning new miner: ' + newName);
             Memory.cNum2++;
         }
@@ -409,7 +411,7 @@ module.exports.loop = function () {
              Memory.cNum3++;
          }
          else if (miners3.length < mCap3) {
-             var newName = Game.spawns['Spawn3'].createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'M' + Memory.cNum, {role: 'miner', bornIn: '3'});
+             var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '3'});
              console.log('[Room3]Spawning new miner: ' + newName);
              Memory.cNum3++;
          }
@@ -429,7 +431,7 @@ module.exports.loop = function () {
 
 //Nomads
     if (nomadsH.length < nhCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum3, {
             role: 'harvester',
             bornIn: 'nomad',
             goFlag: '1'
@@ -438,7 +440,7 @@ module.exports.loop = function () {
         Memory.cNum2++;
     }
     else if (nomadsB.length < nbCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum3, {
             role: 'builder',
             bornIn: 'nomad',
             goFlag: '1'
@@ -446,8 +448,17 @@ module.exports.loop = function () {
         console.log('[Room2]Spawning new nomad builder: ' + newName);
         Memory.cNum2++;
     }
+    else if (nomadsR.length < nrCap) {
+        var newName = Game.spawns['Spawn3'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NR' + Memory.cNum3, {
+            role: 'repairer',
+            bornIn: 'nomad',
+            goFlag: '1'
+        });
+        console.log('[Room2]Spawning new nomad builder: ' + newName);
+        Memory.cNum2++;
+    }
     else if (nomadsU.length < nuCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum3, {
             role: 'upgrader',
             bornIn: 'nomad',
             goFlag: '1'

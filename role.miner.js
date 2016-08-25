@@ -13,18 +13,20 @@ var roleMiner = {
         else {
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE && structure.energy < structure.energyCapacity);
+                    return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
                 }
             });
-            if (target == null) {
-                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
-                    }
-                });
-            }
+            // if (target == null) {
+            //     var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            //         filter: (structure) => {
+            //             return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
+            //         }
+            //     });
+            // }
             if(creep.transfer(target, RESOURCE_OXYGEN) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
+            }
+            if(creep.transfer(target, RESOURCE_CATALYST) == ERR_NOT_IN_RANGE) {
             }
         }
     }

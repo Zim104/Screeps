@@ -8,11 +8,17 @@ var getFromRoom1="storage";
 //Does room 2 get energy from storage,sources, or spawn?
 var getFromRoom2="storage";
 
+//Does room 3 get energy from storage,sources, or spawn?
+var getFromRoom3="storage";
+
+//Do nomads get energy from storage,sources, or spawn?
+var getFromNomad="sources";
+
 //Turn on wall repair?
 var wallRep = 0; //This seems to break road repair.  Needs to be fixed.  --- I think it's fixed now?
 
 //Max wall hits heal?
-var wallRepHits = 2000;
+var wallRepHits = 10000;
 
 //Turn on road repair?
 var roadRep = 1;
@@ -24,7 +30,7 @@ var roadRepStart = 1.2;
 var structureRep = 1;
 
 //Max structure hits heal?
-var structureRepHits = 50000;
+var structureRepHits = 5000;
 
 //-----SETTINGS-----
 
@@ -43,6 +49,14 @@ var roleRepairer = {
         else if (Memory.spawnrooms == 2){
             if (creep.memory.bornIn == 2) {
                 var getFrom=getFromRoom2;
+            }
+        }
+        else if (Memory.spawnrooms == 3){
+            if (creep.memory.bornIn == 2) {
+                var getFrom=getFromRoom2;
+            }            
+            if (creep.memory.bornIn == 3) {
+                var getFrom=getFromRoom3;
             }
         }
 
@@ -64,7 +78,19 @@ var roleRepairer = {
 
             }
 
-            // Get energy from sources?
+
+
+            else if (creep.memory.goFlag == "1"){
+                creep.moveTo(Game.flags.NomadsR)
+                if (creep.pos.inRangeTo(Game.flags.NomadsR, 5) == '1') {
+                    creep.memory.goFlag ="0"
+                    console.log("Clearing goflag")
+                }
+            }
+
+
+
+// Get energy from sources?
             else if(getFrom=="sources") {
                 var sources = creep.room.find(FIND_SOURCES);
                 if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
