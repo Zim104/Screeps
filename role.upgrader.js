@@ -9,8 +9,11 @@ var getFromRoom2="storage";
 //Does room 3 get energy from storage,sources, or spawn?
 var getFromRoom3="storage";
 
+//Does room 4 get energy from storage,sources, or spawn?
+var getFromRoom4="storage";
+
 //Do nomads get energy from storage,sources, or spawn?
-var getFromNomad="sources";
+var getFromNomad="storage";
 
 //-----SETTINGS-----
 
@@ -20,26 +23,24 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+
 //Where does it get it's energy from?
         if (creep.memory.bornIn == 1) {
             var getFrom=getFromRoom1;
         }
-        else if (Memory.spawnrooms == 2){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
-            }
-        }
-        else if (Memory.spawnrooms == 3){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
-            }            
-            if (creep.memory.bornIn == 3) {
-                var getFrom=getFromRoom3;
-            }
-        }
-        if (creep.memory.bornIn == "nomad"){
+        else if (creep.memory.bornIn == 'nomad') {
             var getFrom=getFromNomad;
         }
+        else if (creep.memory.bornIn == 2) {
+            var getFrom=getFromRoom2;
+        }
+        else if (creep.memory.bornIn == 3) {
+            var getFrom=getFromRoom3;
+        }
+        else if (creep.memory.bornIn == 4) {
+            var getFrom=getFromRoom4;
+        }
+        
 
         if(creep.memory.upgrading && creep.carry.energy == 0) {
             creep.memory.upgrading = false;
@@ -47,6 +48,8 @@ var roleUpgrader = {
 	    if(!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.upgrading = true;
 	    }
+
+
 
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
@@ -66,8 +69,8 @@ var roleUpgrader = {
 // Get energy from sources?
         else if(getFrom=="sources") {
             var sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
             }
         }
 
@@ -97,7 +100,7 @@ var roleUpgrader = {
                 }
             });
             if (target !== null) {
-                if (creep.pos.inRangeTo(target, 5) == 1){
+                if (creep.pos.inRangeTo(target, 2) == 1){
                     creep.moveTo(target);
                     target.transferEnergy(creep)
                 }

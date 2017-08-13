@@ -3,16 +3,19 @@
 //Note - these repairers are meant to only repair roads and structures.  Instead, Extra turret energy is used to repair walls.
 
 //Does room 1 get energy from storage,sources, or spawn?
-var getFromRoom1="storage";
+var getFromRoom1 = "storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2="storage";
+var getFromRoom2 = "storage";
 
 //Does room 3 get energy from storage,sources, or spawn?
-var getFromRoom3="storage";
+var getFromRoom3 = "storage";
+
+//Does room 4 get energy from storage,sources, or spawn?
+var getFromRoom4 = "storage";
 
 //Do nomads get energy from storage,sources, or spawn?
-var getFromNomad="sources";
+var getFromNomad = "sources";
 
 //Turn on wall repair?
 var wallRep = 0; //This seems to break road repair.  Needs to be fixed.  --- I think it's fixed now?
@@ -46,19 +49,23 @@ var roleRepairer = {
         else if (creep.memory.bornIn == 'nomad') {
             var getFrom=getFromNomad;
         }
-        else if (Memory.spawnrooms == 2){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
+        else if (creep.memory.bornIn == 2) {
+            var getFrom=getFromRoom2;
             }
-        }
-        else if (Memory.spawnrooms == 3){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
-            }            
-            if (creep.memory.bornIn == 3) {
-                var getFrom=getFromRoom3;
+        else if (creep.memory.bornIn == 3) {
+            var getFrom=getFromRoom3;
             }
-        }
+        else if (creep.memory.bornIn == 4) {
+            var getFrom=getFromRoom4;
+            }
+    
+// Old part for automation, could reuse later?
+//        else if (Memory.spawnrooms == 2){
+//            if (creep.memory.bornIn == 2) {
+//                var getFrom=getFromRoom2;
+//            }
+//        }
+        
 
 //        if(creep.carry.energy == 0) {
 //            var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);

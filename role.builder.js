@@ -1,19 +1,22 @@
 //-----SETTINGS-----
 
 //Does room 1 get energy from storage,sources, or spawn?
-var getFromRoom1="storage";
+var getFromRoom1 = "storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2="storage";
+var getFromRoom2 = "storage";
 
 //Does room 3 get energy from storage,sources, or spawn?
-var getFromRoom3="sources";
+var getFromRoom3 = "storage";
+
+//Does room 4 get energy from storage,sources, or spawn?
+var getFromRoom4 = "storage";
 
 //Nomads get energy from where?
-var getFromNomad="sources"
+var getFromNomad = "sources"
 
 //Construct closest or first?
-var constructDistance="closest"
+var constructDistance = "first"
 
 
 //-----SETTINGS-----
@@ -24,6 +27,7 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+
 //Where does it get it's energy from?
         if (creep.memory.bornIn == 1) {
             var getFrom=getFromRoom1;
@@ -31,21 +35,14 @@ var roleBuilder = {
         else if (creep.memory.bornIn == 'nomad') {
             var getFrom=getFromNomad;
         }
-        else if (Memory.spawnrooms == 2){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
-            }
+        else if (creep.memory.bornIn == 2) {
+            var getFrom=getFromRoom2;
         }
-        else if (Memory.spawnrooms == 3){
-            if (creep.memory.bornIn == 2) {
-                var getFrom=getFromRoom2;
-            }            
-            if (creep.memory.bornIn == 3) {
-                var getFrom=getFromRoom3;
-            }
+        else if (creep.memory.bornIn == 3) {
+            var getFrom=getFromRoom3;
         }
-        else if (creep.memory.bornIn == "nomad"){
-            var getFrom="sources";
+        else if (creep.memory.bornIn == 4) {
+            var getFrom=getFromRoom4;
         }
 
 
@@ -84,9 +81,9 @@ var roleBuilder = {
 
 // Get energy from sources?
         else if(getFrom=="sources") {
-            var source = creep.pos.findClosestByPath(FIND_SOURCES);
-            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
+            let sources = creep.room.find(FIND_SOURCES);
+            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0]);
             }
         }
 	    
