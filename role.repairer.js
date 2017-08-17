@@ -14,8 +14,14 @@ var getFromRoom3 = "storage";
 //Does room 4 get energy from storage,sources, or spawn?
 var getFromRoom4 = "storage";
 
+//Does room 5 get energy from storage,sources, or spawn?
+var getFromRoom5 = "storage";
+
+//Does room 6 get energy from storage,sources, or spawn?
+var getFromRoom6 = "storage";
+
 //Do nomads get energy from storage,sources, or spawn?
-var getFromNomad = "sources";
+var getFromNomad = "spawn";
 
 //Turn on wall repair?
 var wallRep = 0; //This seems to break road repair.  Needs to be fixed.  --- I think it's fixed now?
@@ -58,7 +64,13 @@ var roleRepairer = {
         else if (creep.memory.bornIn == 4) {
             var getFrom=getFromRoom4;
             }
-    
+        else if (creep.memory.bornIn == 5) {
+            var getFrom=getFromRoom5;
+            }
+        else if (creep.memory.bornIn == 6) {
+            var getFrom=getFromRoom6;
+        }
+
 // Old part for automation, could reuse later?
 //        else if (Memory.spawnrooms == 2){
 //            if (creep.memory.bornIn == 2) {
@@ -100,8 +112,8 @@ var roleRepairer = {
 // Get energy from sources?
             else if(getFrom=="sources") {
                 var sources = creep.room.find(FIND_SOURCES);
-                if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[0]);
+                if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[1]);
                 }
             }
 

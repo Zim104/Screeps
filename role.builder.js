@@ -1,19 +1,25 @@
 //-----SETTINGS-----
 
 //Does room 1 get energy from storage,sources, or spawn?
-var getFromRoom1 = "storage";
+var getFromRoom1="storage";
 
 //Does room 2 get energy from storage,sources, or spawn?
-var getFromRoom2 = "storage";
+var getFromRoom2="storage";
 
 //Does room 3 get energy from storage,sources, or spawn?
-var getFromRoom3 = "storage";
+var getFromRoom3="storage";
 
 //Does room 4 get energy from storage,sources, or spawn?
-var getFromRoom4 = "storage";
+var getFromRoom4="storage";
+
+//Does room 5 get energy from storage,sources, or spawn?
+var getFromRoom5="storage";
+
+//Does room 6 get energy from storage,sources, or spawn?
+var getFromRoom6="storage";
 
 //Nomads get energy from where?
-var getFromNomad = "sources"
+var getFromNomad="sources"
 
 //Construct closest or first?
 var constructDistance = "first"
@@ -26,6 +32,11 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+//Emergency fix here, no clue why this isn't working correctly
+var getFromNomad="sources"
+//var getFromRoom5 = "storage";
+//////////////////////
 
 
 //Where does it get it's energy from?
@@ -43,6 +54,12 @@ var roleBuilder = {
         }
         else if (creep.memory.bornIn == 4) {
             var getFrom=getFromRoom4;
+        }
+        else if (creep.memory.bornIn == 5) {
+            var getFrom=getFromRoom5;
+        }
+        else if (creep.memory.bornIn == 6) {
+            var getFrom=getFromRoom6;
         }
 
 
@@ -98,6 +115,7 @@ var roleBuilder = {
                 creep.moveTo(target);
             }
 	    }
+	    
 // Get energy from spawn?
         else if(getFrom=="spawn"){
             var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
