@@ -1,4 +1,4 @@
-0//The real stuff starts here.
+//The real stuff starts here.
 module.exports.loop = function () {
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
@@ -27,18 +27,18 @@ module.exports.loop = function () {
     var uCap1 = 4;  //upgrader
     var eCap1 = 0;  //explorer
     var cCap1 = 0;  //claimer
-    var aCap1 = 3;  //attacker
+    var aCap1 = 0;  //attacker
     var mCap1 = 0;  //miner
 
 //Room 2 population caps
     var hCap2 = 2;  //harvester
     var hbCap2 = 2;  //harvester source 2
-    var bCap2 = 1;  //builder
+    var bCap2 = 0;  //builder
     var rCap2 = 1;  //repairer
-    var uCap2 = 4;  //upgrader
+    var uCap2 = 3;  //upgrader
     var eCap2 = 0;  //explorer
     var cCap2 = 0;  //claimer
-    var aCap2 = 0;  //attacker
+    var aCap2 = 3;  //attacker
     var mCap2 = 0;  //miner
 
 //Room 3 population cap
@@ -79,40 +79,56 @@ module.exports.loop = function () {
     var hbCap6 = 2;  //harvester source 2
     var bCap6 = 0;  //builder
     var rCap6 = 1;  //repairer
-    var uCap6 = 4;  //upgrader
+    var uCap6 = 2;  //upgrader
     var eCap6 = 0;  //explorer
     var cCap6 = 0;  //claimer
     var aCap6 = 0;  //attacker
     var mCap6 = 0;  //miner
+    
+//Room 7 population cap
+    var hCap7 = 3;  //harvester   ---  change back to 2 after links
+    var hbCap7 = 2;  //harvester source 2
+    var bCap7 = 0;  //builder
+    var rCap7 = 1;  //repairer
+    var uCap7 = 1;  //upgrader
+    var eCap7 = 0;  //explorer
+    var cCap7 = 0;  //claimer
+    var aCap7 = 0;  //attacker
+    var mCap7 = 0;  //miner
 
 //Nomad population caps
-    var nhCap = 0;  //harvester
-    var nbCap = 2;  //builder
-    var nuCap = 5;  //upgrader
+    var nhCap = 1;  //harvester
+    var nbCap = 0;  //builder
+    var nuCap = 2;  //upgrader
     var nrCap = 1;  //repairer
 
 //Turn on tower wall healing?
     var tower1Heal = 1;
-    var tower1HealTo = 900000;
+    var tower1HealTo = 1000000;
     var tower2Heal = 1;
-    var tower2HealTo = 400000;
+    var tower2HealTo = 600000;
     var tower3Heal = 1;
-    var tower3HealTo = 3000000;
+    var tower3HealTo = 8000000;
     var tower4Heal = 1;
-    var tower4HealTo = 250000;
+    var tower4HealTo = 650000;
     var tower5Heal = 1;
-    var tower5HealTo = 20000;
+    var tower5HealTo = 80000;
     var tower6Heal = 1;
-    var tower6HealTo = 4000;
-
+    var tower6HealTo = 160000;
+    var tower7Heal = 1;
+    var tower7HealTo = 600000;
+    var tower8Heal = 1;
+    var tower8HealTo = 40000;
 
 //Towers will only heal if storage is higher than this amount of energy
     var tower1HealStores = 400000;
     var tower2HealStores = 20000;
     var tower3HealStores = 20000;
     var tower4HealStores = 20000;
-    var tower5HealStores = 0;
-    var tower6HealStores = 0;
+    var tower5HealStores = 20000;
+    var tower6HealStores = 20000;
+    var tower7HealStores = 20000;
+    var tower8HealStores = 0;
 
 //Name of rooms
     var room1Name = "[room W17N1]";
@@ -121,6 +137,8 @@ module.exports.loop = function () {
     var room4Name = "[room W16N2]";
     var room5Name = "[room W17N4]";
     var room6Name = "[room W16N3]";
+    var room7Name = "[room W19N6]";
+    var room8Name = "[room W18N5]";
 
 //Deposit Links and TransferTo Links
 //    var senderLink1;
@@ -133,10 +151,12 @@ module.exports.loop = function () {
     var senderLink3 = Game.getObjectById('599288f783c9214daf69d3fe');
     var receiverLink3 = Game.getObjectById('59929c733d420e443d7e38f2');
     var senderLink4 = Game.getObjectById('5992fe3e1fd01d0d77376667');
-    var receiverLink4 = Game.getObjectById('5992fbf64d5ab30d8a2d5441');    
+    var receiverLink4 = Game.getObjectById('5992fbf64d5ab30d8a2d5441');
+    var senderLink5 = Game.getObjectById('5995f11315daa73be1b75db4');
+    var receiverLink5 = Game.getObjectById('59960f3634698d4fb73ffa8d');
 
 //How many spawn rooms do you have?
-    var spawnrooms = 5;
+    var spawnrooms = 7;
 
 //Alliance Members
     var allianceMembers = ['GMan', 'Nam'];
@@ -156,11 +176,15 @@ module.exports.loop = function () {
         Memory.cNum3 = 1;
         Memory.cNum4 = 1;
         Memory.cNum5 = 1;
+        Memory.cNum6 = 1;
+        Memory.cNum7 = 1;
         Memory.failSafe1 = 250;
         Memory.failSafe2 = 250;
         Memory.failSafe3 = 250;
         Memory.failSafe4 = 250;
         Memory.failSafe5 = 250;
+        Memory.failSafe6 = 250;
+        Memory.failSafe7 = 250;
         Memory.firstRun = 1;
         Memory.spawnrooms = 1;
     }
@@ -174,13 +198,16 @@ module.exports.loop = function () {
         Memory.room3Name = room3Name;
     }
     if (room4Name !== null) {
-        Memory.room3Name = room3Name;
+        Memory.room4Name = room4Name;
     }
     if (room5Name !== null) {
-        Memory.room3Name = room3Name;
+        Memory.room5Name = room5Name;
     }
     if (room6Name !== null) {
-        Memory.room3Name = room3Name;
+        Memory.room6Name = room6Name;
+    }
+    if (room7Name !== null) {
+        Memory.room7Name = room7Name;
     }
     if (Memory.spawnrooms != spawnrooms) {
         Memory.spawnrooms = spawnrooms;
@@ -199,6 +226,8 @@ module.exports.loop = function () {
     var Room4=Game.spawns.Spawn4.room;
     var Room5=Game.spawns.Spawn5.room;
     var Room6=Game.spawns.Spawn6.room;
+    var Room7=Game.spawns.Spawn7.room;
+    var Room8=Game.spawns.Spawn8.room;
     
 
 //This is the part that doesnt work anymore
@@ -289,6 +318,18 @@ module.exports.loop = function () {
     var attackers6 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '6');
     var miners6 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '6');
     var population6 = harvesters6.length + repairers6.length + builders6.length + upgraders6.length + explorers6.length + claimers6.length + attackers6.length;
+
+//Population monitoring for room7
+    var harvesters7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '7' && creep.memory.source !== '2');
+    var harvesters7b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '7' && creep.memory.source == '2');
+    var builders7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '7');
+    var upgraders7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '7');
+    var repairers7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '7');
+    var explorers7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '7');
+    var claimers7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '7');
+    var attackers7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '7');
+    var miners7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '7');
+    var population7 = harvesters7.length + repairers7.length + builders7.length + upgraders7.length + explorers7.length + claimers7.length + attackers7.length;
 
 //Population monitoring for nomads
     var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
@@ -731,42 +772,112 @@ module.exports.loop = function () {
     }
 
 
+
+//If spawn is in room7, then spawn things like this...
+    if (Memory.spawnrooms >= 7){
+        if (harvesters7.length < hCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum7, {role: 'harvester', bornIn: '7'});
+            console.log('[Room7]Spawning new harvester: ' + newName);
+            Memory.cNum7++;
+            Memory.failSafe7--;
+            console.log('[Room7]Defcon countdown: ' + Memory.failSafe7);
+            if (Memory.failSafe7 < 1) {
+                var newName = Game.spawns['Spawn7'].createCreep([WORK, CARRY, MOVE], 'H' + Memory.cNum7, {role: 'harvester', bornIn: '7'});
+                console.log('[Room7]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
+            }
+        }
+        else if (harvesters7b.length < hbCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'HB' + Memory.cNum7, {
+                role: 'harvester',
+                bornIn: '7',
+                source: '2'
+            });
+            console.log('[Room7]Spawning new harvester b: ' + newName);
+            Memory.cNum7++;
+        }
+        else if (builders7.length < bCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum7, {role: 'builder', bornIn: '7'});
+            console.log('[Room7]Spawning new builder: ' + newName);
+            Memory.cNum7++;
+        }
+        else if (repairers7.length < rCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([WORK, WORK, CARRY, MOVE], 'R' + Memory.cNum7, {role: 'repairer', bornIn: '7'});
+            console.log('[Room7]Spawning new repairer: ' + newName);
+            Memory.cNum7++;
+        }
+        else if (upgraders7.length < uCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'U' + Memory.cNum7, {role: 'upgrader', bornIn: '7'});
+            console.log('[Room7]Spawning new upgrader: ' + newName);
+            Memory.cNum7++;
+        }
+        else if (explorers7.length < eCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum7, {role: 'explorer', bornIn: '7'});
+            console.log('[Room7]Spawning new explorer: ' + newName);
+            Memory.cNum7++;
+        }
+
+        else if (claimers7.length < cCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([CLAIM, CLAIM, MOVE, MOVE], 'C' + Memory.cNum7, {role: 'claimer', bornIn: '7'});
+            console.log('[Room7]Spawning new claimer: ' + newName);
+            Memory.cNum7++;
+        }
+
+        else if (attackers7.length < aCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum7, {role: 'attacker', bornIn: '7', goFlag: '1'});
+            console.log('[Room7]Spawning new attacker: ' + newName);
+            Memory.cNum7++;
+        }
+        else if (miners7.length < mCap7) {
+            var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '7'});
+            console.log('[Room7]Spawning new miner: ' + newName);
+            Memory.cNum7++;
+        }
+
+        else if (harvesters7.length == hCap7 & Memory.failSafe7 != 270) {
+            Memory.failSafe7 = 270;
+            console.log('[Room7]Defcon countdown reset to: ' + Memory.failSafe7);
+        }
+    }
+
+
+
+
 //Nomads
     if (nomadsH.length < nhCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum1, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum2, {
             role: 'harvester',
             bornIn: 'nomad',
             goFlag: '1'
         });
         console.log('[Room2]Spawning new nomad harvester: ' + newName);
-        Memory.cNum1++;
+        Memory.cNum2++;
     }
     else if (nomadsB.length < nbCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum1, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum2, {
             role: 'builder',
             bornIn: 'nomad',
             goFlag: '1'
         });
         console.log('[Room2]Spawning new nomad builder: ' + newName);
-        Memory.cNum1++;
+        Memory.cNum2++;
     }
     else if (nomadsR.length < nrCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NR' + Memory.cNum1, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NR' + Memory.cNum2, {
             role: 'repairer',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room1]Spawning new nomad builder: ' + newName);
-        Memory.cNum1++;
+        console.log('[Room2]Spawning new nomad builder: ' + newName);
+        Memory.cNum2++;
     }
     else if (nomadsU.length < nuCap) {
-        var newName = Game.spawns['Spawn1'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum1, {
+        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum2, {
             role: 'upgrader',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room1]Spawning new nomad upgrader: ' + newName);
-        Memory.cNum1++;
+        console.log('[Room2]Spawning new nomad upgrader: ' + newName);
+        Memory.cNum2++;
     }
 
 
@@ -868,6 +979,21 @@ module.exports.loop = function () {
         }
     }
 
+//Link Room 5
+    var link5Cooldown = senderLink5.cooldown;
+    if (senderLink5.energy > 0){
+        if (senderLink5.cooldown == "0"){
+            if (senderLink5.energy < receiverLink5.energyCapacity - receiverLink5.energy){
+                //                console.log("Sender 2 attempting to send all it's got")
+                senderLink5.transferEnergy(receiverLink5, senderLink5.energy)
+            }
+            else {
+//                console.log("Sender 2 attempting to cap off")
+                senderLink5.transferEnergy(receiverLink5, receiverLink5.energyCapacity - receiverLink5.energy);
+            }
+        }
+    }
+
 
 
 //    for (var allianceMembers){
@@ -906,7 +1032,7 @@ module.exports.loop = function () {
 
         if (targetTower1 != undefined) {
             tower1.attack(targetTower1);
-            Game.notify("Room1 Tower has spotted enemies!");
+//            Game.notify("Room1 Tower has spotted enemies!");
             console.log("[Room1]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -956,7 +1082,7 @@ module.exports.loop = function () {
 
         if (targetTower2 != undefined) {
             tower2.attack(targetTower2);
-            Game.notify("Room2 Tower has spotted enemies!");
+//            Game.notify("Room2 Tower has spotted enemies!");
             console.log("[Room2]ENEMY SIGHTED!")
         }
 
@@ -1003,7 +1129,7 @@ module.exports.loop = function () {
 
         if (targetTower3 != undefined) {
             tower3.attack(targetTower3);
-            Game.notify("Room3 Tower has spotted enemies!");
+//            Game.notify("Room3 Tower has spotted enemies!");
             console.log("[Room3]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -1049,7 +1175,7 @@ module.exports.loop = function () {
 
         if (targetTower4 != undefined) {
             tower4.attack(targetTower4);
-            Game.notify("Room4 Tower has spotted enemies!");
+//            Game.notify("Room4 Tower has spotted enemies!");
             console.log("[Room4]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -1096,7 +1222,7 @@ module.exports.loop = function () {
 
         if (targetTower5 != undefined) {
             tower5.attack(targetTower5);
-            Game.notify("Room5 Tower has spotted enemies!");
+//            Game.notify("Room5 Tower has spotted enemies!");
             console.log("[Room5]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -1142,7 +1268,7 @@ module.exports.loop = function () {
 
         if (targetTower6 != undefined) {
             tower6.attack(targetTower6);
-            Game.notify("Room6 Tower has spotted enemies!");
+//            Game.notify("Room6 Tower has spotted enemies!");
             console.log("[Room6]ENEMY SIGHTED!")
         }
 //Tower Healing
@@ -1156,6 +1282,99 @@ module.exports.loop = function () {
         }
     }
 
+
+
+//Room 7 Tower Stuff
+//Shuts off tower healing if energy storage is not enough
+    var storage7 = Room7.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > tower7HealStores)
+}
+});
+    if (storage7 == ""){
+        tower7HealHealShutoff = 1
+    }
+    else {
+        tower7HealHealShutoff = 0
+    }
+//Tower Defense Room 7
+    var towers7 = Room7.find(FIND_STRUCTURES, {
+        filter: (s) => s.structureType == STRUCTURE_TOWER
+});
+    for (var tower7 of towers7) {
+        var targetTower7 = tower7.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+
+//Code to detect allies
+        ally = 0;
+        for (i=0; i < allianceMembers.length;i++){
+            if (targetTower7 != undefined && targetTower7.owner.username == allianceMembers[i]){
+                ally = 1;
+            }
+        }
+
+        if (targetTower7 != undefined) {
+            tower7.attack(targetTower7);
+//            Game.notify("Room7 Tower has spotted enemies!");
+            console.log("[Room7]ENEMY SIGHTED!")
+        }
+//Tower Healing
+        else if(tower7Heal == 1 && tower7HealHealShutoff !== 1) {
+            var closestDamagedStructure = tower7.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower7HealTo && structure.hits != structure.hitsMax
+        });
+            if(closestDamagedStructure && tower7.energy > 700) {
+                tower7.repair(closestDamagedStructure);
+            }
+        }
+    }
+    
+    
+    
+    //Room 8 Tower Stuff
+//Shuts off tower healing if energy storage is not enough
+    var storage8 = Room8.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > tower8HealStores)
+}
+});
+    if (storage8 == ""){
+        tower8HealHealShutoff = 0
+    }
+    else {
+        tower8HealHealShutoff = 0
+    }
+//Tower Defense Room 8
+    var towers8 = Room8.find(FIND_STRUCTURES, {
+        filter: (s) => s.structureType == STRUCTURE_TOWER
+});
+    for (var tower8 of towers8) {
+        var targetTower8 = tower8.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+
+//Code to detect allies
+        ally = 0;
+        for (i=0; i < allianceMembers.length;i++){
+            if (targetTower8 != undefined && targetTower8.owner.username == allianceMembers[i]){
+                ally = 1;
+            }
+        }
+
+        if (targetTower8 != undefined) {
+            tower8.attack(targetTower8);
+//            Game.notify("Room8 Tower has spotted enemies!");
+            console.log("[Room8]ENEMY SIGHTED!")
+        }
+//Tower Healing
+        else if(tower8Heal == 1 && tower8HealHealShutoff !== 1) {
+            var closestDamagedStructure = tower8.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower8HealTo && structure.hits != structure.hitsMax
+        });
+            if(closestDamagedStructure && tower8.energy > 750) {
+                tower8.repair(closestDamagedStructure);
+            }
+        }
+    }
+
+    
 
 
 

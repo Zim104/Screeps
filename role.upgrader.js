@@ -18,6 +18,9 @@ var getFromRoom5="storage";
 //Does room 6 get energy from storage,sources, or spawn?
 var getFromRoom6="storage";
 
+//Does room 7 get energy from storage,sources, or spawn?
+var getFromRoom7="storage";
+
 //Do nomads get energy from storage,sources, or spawn?
 var getFromNomad="sources";
 
@@ -51,6 +54,9 @@ var roleUpgrader = {
         }
         else if (creep.memory.bornIn == 6) {
             var getFrom=getFromRoom6;
+        }
+        else if (creep.memory.bornIn == 7) {
+            var getFrom=getFromRoom7;
         }
 
 

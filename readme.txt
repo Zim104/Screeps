@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.196
+Version 0.196b
 
 
 
@@ -14,6 +14,7 @@ Sometime I hope to transform the code into a much more automated system in the w
 
 To do list
 ===========================
+o Make repairers pick up dropped energy in a smart way.
 o Refine repairers to fully repair instead of repairing to the set threshold.
 o Repairers make poor decisions & prioritize poorly on what needs repairs.  Plz fix.
 o Clean up cpu usage by using less pathfinding.
@@ -23,8 +24,14 @@ o Clean up cpu usage by using less pathfinding.
 History
 ===========================
 
+Version 0.196b
+8/21/2017
+---------------------------
+- Added support for room 7.
+
+
 Version 0.196
-8/13/2017
+8/17/2017
 ---------------------------
 - Added support for rooms 5 & 6.
 - Continued to make code more of a mess.

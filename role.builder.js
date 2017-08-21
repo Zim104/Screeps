@@ -18,11 +18,14 @@ var getFromRoom5="storage";
 //Does room 6 get energy from storage,sources, or spawn?
 var getFromRoom6="storage";
 
+//Does room 7 get energy from storage,sources, or spawn?
+var getFromRoom7="sources";
+
 //Nomads get energy from where?
 var getFromNomad="sources"
 
 //Construct closest or first?
-var constructDistance = "first"
+var constructDistance = "closest"
 
 
 //-----SETTINGS-----
@@ -60,6 +63,9 @@ var getFromNomad="sources"
         }
         else if (creep.memory.bornIn == 6) {
             var getFrom=getFromRoom6;
+        }
+        else if (creep.memory.bornIn == 7) {
+            var getFrom=getFromRoom7;
         }
 
 
