@@ -38,7 +38,7 @@ module.exports.loop = function () {
     var uCap2 = 3;  //upgrader
     var eCap2 = 0;  //explorer
     var cCap2 = 0;  //claimer
-    var aCap2 = 3;  //attacker
+    var aCap2 = 0;  //attacker
     var mCap2 = 0;  //miner
 
 //Room 3 population cap
@@ -96,15 +96,26 @@ module.exports.loop = function () {
     var aCap7 = 0;  //attacker
     var mCap7 = 0;  //miner
 
+//Room 8 population cap
+    var hCap8 = 2;  //harvester   ---  change back to 2 after links
+    var hbCap8 = 2;  //harvester source 2
+    var bCap8 = 0;  //builder
+    var rCap8 = 1;  //repairer
+    var uCap8 = 3;  //upgrader
+    var eCap8 = 0;  //explorer
+    var cCap8 = 0;  //claimer
+    var aCap8 = 0;  //attacker
+    var mCap8 = 0;  //miner
+
 //Nomad population caps
-    var nhCap = 1;  //harvester
+    var nhCap = 0;  //harvester
     var nbCap = 0;  //builder
-    var nuCap = 2;  //upgrader
-    var nrCap = 1;  //repairer
+    var nuCap = 0;  //upgrader
+    var nrCap = 0;  //repairer
 
 //Turn on tower wall healing?
     var tower1Heal = 1;
-    var tower1HealTo = 1000000;
+    var tower1HealTo = 4000000;
     var tower2Heal = 1;
     var tower2HealTo = 600000;
     var tower3Heal = 1;
@@ -114,9 +125,9 @@ module.exports.loop = function () {
     var tower5Heal = 1;
     var tower5HealTo = 80000;
     var tower6Heal = 1;
-    var tower6HealTo = 160000;
+    var tower6HealTo = 250000;
     var tower7Heal = 1;
-    var tower7HealTo = 600000;
+    var tower7HealTo = 1000000;
     var tower8Heal = 1;
     var tower8HealTo = 40000;
 
@@ -156,7 +167,7 @@ module.exports.loop = function () {
     var receiverLink5 = Game.getObjectById('59960f3634698d4fb73ffa8d');
 
 //How many spawn rooms do you have?
-    var spawnrooms = 7;
+    var spawnrooms = 8;
 
 //Alliance Members
     var allianceMembers = ['GMan', 'Nam'];
@@ -167,7 +178,7 @@ module.exports.loop = function () {
 
 
 
-
+    
 
 //Inject some memory for starting rooms
     if (Memory.firstRun == null) {
@@ -178,6 +189,7 @@ module.exports.loop = function () {
         Memory.cNum5 = 1;
         Memory.cNum6 = 1;
         Memory.cNum7 = 1;
+        Memory.cNum8 = 1;
         Memory.failSafe1 = 250;
         Memory.failSafe2 = 250;
         Memory.failSafe3 = 250;
@@ -185,6 +197,7 @@ module.exports.loop = function () {
         Memory.failSafe5 = 250;
         Memory.failSafe6 = 250;
         Memory.failSafe7 = 250;
+        Memory.failSafe8 = 250;
         Memory.firstRun = 1;
         Memory.spawnrooms = 1;
     }
@@ -330,6 +343,18 @@ module.exports.loop = function () {
     var attackers7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '7');
     var miners7 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '7');
     var population7 = harvesters7.length + repairers7.length + builders7.length + upgraders7.length + explorers7.length + claimers7.length + attackers7.length;
+
+//Population monitoring for room8
+    var harvesters8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '8' && creep.memory.source !== '2');
+    var harvesters8b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '8' && creep.memory.source == '2');
+    var builders8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '8');
+    var upgraders8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '8');
+    var repairers8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '8');
+    var explorers8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '8');
+    var claimers8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '8');
+    var attackers8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '8');
+    var miners8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '8');
+    var population8 = harvesters8.length + repairers8.length + builders8.length + upgraders8.length + explorers8.length + claimers8.length + attackers8.length;    
 
 //Population monitoring for nomads
     var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
@@ -839,6 +864,76 @@ module.exports.loop = function () {
         }
     }
 
+
+
+
+//If spawn is in room8, then spawn things like this...
+    if (Memory.spawnrooms >= 8){
+        if (harvesters8.length < hCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum8, {role: 'harvester', bornIn: '8'});
+            console.log('[Room8]Spawning new harvester: ' + newName);
+            Memory.cNum8++;
+            Memory.failSafe8--;
+            console.log('[Room8]Defcon countdown: ' + Memory.failSafe8);
+            if (Memory.failSafe8 < 1) {
+                var newName = Game.spawns['Spawn8'].createCreep([WORK, CARRY, MOVE], 'H' + Memory.cNum8, {role: 'harvester', bornIn: '8'});
+                console.log('[Room8]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
+            }
+        }
+        else if (harvesters8b.length < hbCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'HB' + Memory.cNum8, {
+                role: 'harvester',
+                bornIn: '8',
+                source: '2'
+            });
+            console.log('[Room8]Spawning new harvester b: ' + newName);
+            Memory.cNum8++;
+        }
+        else if (builders8.length < bCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum8, {role: 'builder', bornIn: '8'});
+            console.log('[Room8]Spawning new builder: ' + newName);
+            Memory.cNum8++;
+        }
+        else if (repairers8.length < rCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([WORK, WORK, CARRY, MOVE], 'R' + Memory.cNum8, {role: 'repairer', bornIn: '8'});
+            console.log('[Room8]Spawning new repairer: ' + newName);
+            Memory.cNum8++;
+        }
+        else if (upgraders8.length < uCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'U' + Memory.cNum8, {role: 'upgrader', bornIn: '8'});
+            console.log('[Room8]Spawning new upgrader: ' + newName);
+            Memory.cNum8++;
+        }
+        else if (explorers8.length < eCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum8, {role: 'explorer', bornIn: '8'});
+            console.log('[Room8]Spawning new explorer: ' + newName);
+            Memory.cNum8++;
+        }
+
+        else if (claimers8.length < cCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([CLAIM, CLAIM, MOVE, MOVE], 'C' + Memory.cNum8, {role: 'claimer', bornIn: '8'});
+            console.log('[Room8]Spawning new claimer: ' + newName);
+            Memory.cNum8++;
+        }
+
+        else if (attackers8.length < aCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum8, {role: 'attacker', bornIn: '8', goFlag: '1'});
+            console.log('[Room8]Spawning new attacker: ' + newName);
+            Memory.cNum8++;
+        }
+        else if (miners8.length < mCap8) {
+            var newName = Game.spawns['Spawn8'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '8'});
+            console.log('[Room8]Spawning new miner: ' + newName);
+            Memory.cNum8++;
+        }
+
+        else if (harvesters8.length == hCap8 & Memory.failSafe8 != 280) {
+            Memory.failSafe8 = 280;
+            console.log('[Room8]Defcon countdown reset to: ' + Memory.failSafe8);
+        }
+    }
+    
+    
 
 
 

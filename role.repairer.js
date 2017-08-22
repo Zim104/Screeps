@@ -23,6 +23,9 @@ var getFromRoom6 = "storage";
 //Does room 7 get energy from storage,sources, or spawn?
 var getFromRoom7 = "storage";
 
+//Does room 8 get energy from storage,sources, or spawn?
+var getFromRoom8 = "storage";
+
 //Do nomads get energy from storage,sources, or spawn?
 var getFromNomad = "sources";
 
@@ -75,6 +78,9 @@ var roleRepairer = {
         }
         else if (creep.memory.bornIn == 7) {
             var getFrom=getFromRoom7;
+        }
+        else if (creep.memory.bornIn == 8) {
+            var getFrom=getFromRoom8;
         }
 
 // Old part for automation, could reuse later?

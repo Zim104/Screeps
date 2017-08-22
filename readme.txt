@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.196b
+Version 0.196c
 
 
 
@@ -23,6 +23,12 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+Version 0.196c
+8/22/2017
+---------------------------
+- Added support for room 8.
+
 
 Version 0.196b
 8/21/2017
