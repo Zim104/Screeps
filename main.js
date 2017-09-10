@@ -24,7 +24,7 @@ module.exports.loop = function () {
     var hbCap1 = 2;  //harvester source 2
     var bCap1 = 0;  //builder
     var rCap1 = 1;  //repairer
-    var uCap1 = 4;  //upgrader
+    var uCap1 = 6;  //upgrader
     var eCap1 = 0;  //explorer
     var cCap1 = 0;  //claimer
     var aCap1 = 0;  //attacker
@@ -35,7 +35,7 @@ module.exports.loop = function () {
     var hbCap2 = 2;  //harvester source 2
     var bCap2 = 0;  //builder
     var rCap2 = 1;  //repairer
-    var uCap2 = 3;  //upgrader
+    var uCap2 = 5;  //upgrader
     var eCap2 = 0;  //explorer
     var cCap2 = 0;  //claimer
     var aCap2 = 0;  //attacker
@@ -46,7 +46,7 @@ module.exports.loop = function () {
     var hbCap3 = 2;  //harvester source 2
     var bCap3 = 0;  //builder
     var rCap3 = 1;  //repairer
-    var uCap3 = 4;  //upgrader
+    var uCap3 = 7;  //upgrader
     var eCap3 = 0;  //explorer
     var cCap3 = 0;  //claimer
     var aCap3 = 0;  //attacker
@@ -79,55 +79,66 @@ module.exports.loop = function () {
     var hbCap6 = 2;  //harvester source 2
     var bCap6 = 0;  //builder
     var rCap6 = 1;  //repairer
-    var uCap6 = 2;  //upgrader
+    var uCap6 = 3;  //upgrader
     var eCap6 = 0;  //explorer
     var cCap6 = 0;  //claimer
     var aCap6 = 0;  //attacker
     var mCap6 = 0;  //miner
     
 //Room 7 population cap
-    var hCap7 = 3;  //harvester   ---  change back to 2 after links
+    var hCap7 = 2;  //harvester
     var hbCap7 = 2;  //harvester source 2
     var bCap7 = 0;  //builder
     var rCap7 = 1;  //repairer
-    var uCap7 = 1;  //upgrader
+    var uCap7 = 3;  //upgrader
     var eCap7 = 0;  //explorer
     var cCap7 = 0;  //claimer
-    var aCap7 = 0;  //attacker
+    var aCap7 = 3;  //attacker
     var mCap7 = 0;  //miner
 
 //Room 8 population cap
-    var hCap8 = 2;  //harvester   ---  change back to 2 after links
+    var hCap8 = 2;  //harvester
     var hbCap8 = 2;  //harvester source 2
     var bCap8 = 0;  //builder
     var rCap8 = 1;  //repairer
-    var uCap8 = 3;  //upgrader
+    var uCap8 = 5;  //upgrader
     var eCap8 = 0;  //explorer
     var cCap8 = 0;  //claimer
     var aCap8 = 0;  //attacker
     var mCap8 = 0;  //miner
+    
+//Room 9 population cap
+    var hCap9 = 0;  //harvester
+    var hbCap9 = 0;  //harvester source 2
+    var bCap9 = 0;  //builder
+    var rCap9 = 1;  //repairer
+    var uCap9 = 0;  //upgrader
+    var eCap9 = 0;  //explorer
+    var cCap9 = 0;  //claimer
+    var aCap9 = 0;  //attacker
+    var mCap9 = 0;  //miner    
 
 //Nomad population caps
     var nhCap = 0;  //harvester
-    var nbCap = 0;  //builder
-    var nuCap = 0;  //upgrader
+    var nbCap = 2;  //builder
+    var nuCap = 2;  //upgrader
     var nrCap = 0;  //repairer
 
 //Turn on tower wall healing?
     var tower1Heal = 1;
     var tower1HealTo = 4000000;
     var tower2Heal = 1;
-    var tower2HealTo = 600000;
+    var tower2HealTo = 1000000;
     var tower3Heal = 1;
-    var tower3HealTo = 8000000;
+    var tower3HealTo = 15000000;
     var tower4Heal = 1;
     var tower4HealTo = 650000;
     var tower5Heal = 1;
-    var tower5HealTo = 80000;
+    var tower5HealTo = 250000;
     var tower6Heal = 1;
-    var tower6HealTo = 250000;
+    var tower6HealTo = 1000000;
     var tower7Heal = 1;
-    var tower7HealTo = 1000000;
+    var tower7HealTo = 50000;
     var tower8Heal = 1;
     var tower8HealTo = 40000;
 
@@ -150,6 +161,7 @@ module.exports.loop = function () {
     var room6Name = "[room W16N3]";
     var room7Name = "[room W19N6]";
     var room8Name = "[room W18N5]";
+    var room9Name = "[room W19N5]";
 
 //Deposit Links and TransferTo Links
 //    var senderLink1;
@@ -165,9 +177,15 @@ module.exports.loop = function () {
     var receiverLink4 = Game.getObjectById('5992fbf64d5ab30d8a2d5441');
     var senderLink5 = Game.getObjectById('5995f11315daa73be1b75db4');
     var receiverLink5 = Game.getObjectById('59960f3634698d4fb73ffa8d');
+    var senderLink6 = Game.getObjectById('59a25fababd7335ef4b0ae3c');
+    var receiverLink6 = Game.getObjectById('59a1c36b8f6d5272c9d36063');
+    var senderLink7 = Game.getObjectById('59a284ce2d2e5b22ea06893f');
+    var receiverLink7 = Game.getObjectById('59a26ec3c9549e74e57a70cb');    
+    var senderLink8 = Game.getObjectById('59a32fc1ccfe0a4d43ff0d4e');
+    var receiverLink8 = Game.getObjectById('59a30ea188e45701dbb46d42');       
 
 //How many spawn rooms do you have?
-    var spawnrooms = 8;
+    var spawnrooms = 9;
 
 //Alliance Members
     var allianceMembers = ['GMan', 'Nam'];
@@ -175,7 +193,6 @@ module.exports.loop = function () {
 
 
 //-----SETTINGS-----
-
 
 
     
@@ -190,6 +207,7 @@ module.exports.loop = function () {
         Memory.cNum6 = 1;
         Memory.cNum7 = 1;
         Memory.cNum8 = 1;
+        Memory.cNum9 = 1;
         Memory.failSafe1 = 250;
         Memory.failSafe2 = 250;
         Memory.failSafe3 = 250;
@@ -198,6 +216,7 @@ module.exports.loop = function () {
         Memory.failSafe6 = 250;
         Memory.failSafe7 = 250;
         Memory.failSafe8 = 250;
+        Memory.failSafe9 = 250;
         Memory.firstRun = 1;
         Memory.spawnrooms = 1;
     }
@@ -241,6 +260,7 @@ module.exports.loop = function () {
     var Room6=Game.spawns.Spawn6.room;
     var Room7=Game.spawns.Spawn7.room;
     var Room8=Game.spawns.Spawn8.room;
+    var Room9=Game.spawns.Spawn9.room;
     
 
 //This is the part that doesnt work anymore
@@ -355,6 +375,18 @@ module.exports.loop = function () {
     var attackers8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '8');
     var miners8 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '8');
     var population8 = harvesters8.length + repairers8.length + builders8.length + upgraders8.length + explorers8.length + claimers8.length + attackers8.length;    
+
+//Population monitoring for room9
+    var harvesters9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '9' && creep.memory.source !== '2');
+    var harvesters9b = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == '9' && creep.memory.source == '2');
+    var builders9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.memory.bornIn == '9');
+    var upgraders9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.memory.bornIn == '9');
+    var repairers9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.memory.bornIn == '9');
+    var explorers9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'explorer' && creep.memory.bornIn == '9');
+    var claimers9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer' && creep.memory.bornIn == '9');
+    var attackers9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'attacker' && creep.memory.bornIn == '9');
+    var miners9 = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.bornIn == '9');
+    var population9 = harvesters9.length + repairers9.length + builders9.length + upgraders9.length + explorers9.length + claimers9.length + attackers9.length;    
 
 //Population monitoring for nomads
     var nomadsH = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.bornIn == 'nomad');
@@ -934,44 +966,111 @@ module.exports.loop = function () {
     }
     
     
+//If spawn is in room9, then spawn things like this...
+    if (Memory.spawnrooms >= 9){
+        if (harvesters9.length < hCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'H' + Memory.cNum9, {role: 'harvester', bornIn: '9'});
+            console.log('[Room9]Spawning new harvester: ' + newName);
+            Memory.cNum9++;
+            Memory.failSafe9--;
+            console.log('[Room9]Defcon countdown: ' + Memory.failSafe9);
+            if (Memory.failSafe9 < 1) {
+                var newName = Game.spawns['Spawn9'].createCreep([WORK, CARRY, MOVE], 'H' + Memory.cNum9, {role: 'harvester', bornIn: '9'});
+                console.log('[Room9]**SPWANING EMERGENCY HARVESTER: ' + newName + '**');
+            }
+        }
+        else if (harvesters9b.length < hbCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'HB' + Memory.cNum9, {
+                role: 'harvester',
+                bornIn: '9',
+                source: '2'
+            });
+            console.log('[Room9]Spawning new harvester b: ' + newName);
+            Memory.cNum9++;
+        }
+        else if (builders9.length < bCap9) {
+            //var newName = Game.spawns['Spawn9'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE], 'B' + Memory.cNum9, {role: 'builder', bornIn: '9'});
+            var newName = Game.spawns['Spawn9'].createCreep([WORK, WORK, CARRY, MOVE], 'B' + Memory.cNum9, {role: 'builder', bornIn: '9'});
+            console.log('[Room9]Spawning new builder: ' + newName);
+            Memory.cNum9++;
+        }
+        else if (repairers9.length < rCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([WORK, WORK, CARRY, MOVE], 'R' + Memory.cNum9, {role: 'repairer', bornIn: '9'});
+            console.log('[Room9]Spawning new repairer: ' + newName);
+            Memory.cNum9++;
+        }
+        else if (upgraders9.length < uCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'U' + Memory.cNum9, {role: 'upgrader', bornIn: '9'});
+            console.log('[Room9]Spawning new upgrader: ' + newName);
+            Memory.cNum9++;
+        }
+        else if (explorers9.length < eCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY], 'E' + Memory.cNum9, {role: 'explorer', bornIn: '9'});
+            console.log('[Room9]Spawning new explorer: ' + newName);
+            Memory.cNum9++;
+        }
+
+        else if (claimers9.length < cCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([CLAIM, CLAIM, MOVE, MOVE], 'C' + Memory.cNum9, {role: 'claimer', bornIn: '9'});
+            console.log('[Room9]Spawning new claimer: ' + newName);
+            Memory.cNum9++;
+        }
+
+        else if (attackers9.length < aCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'A' + Memory.cNum9, {role: 'attacker', bornIn: '9', goFlag: '1'});
+            console.log('[Room9]Spawning new attacker: ' + newName);
+            Memory.cNum9++;
+        }
+        else if (miners9.length < mCap9) {
+            var newName = Game.spawns['Spawn9'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'M' + Memory.cNum, {role: 'miner', bornIn: '9'});
+            console.log('[Room9]Spawning new miner: ' + newName);
+            Memory.cNum9++;
+        }
+
+        else if (harvesters9.length == hCap9 & Memory.failSafe9 != 290) {
+            Memory.failSafe9 = 290;
+            console.log('[Room9]Defcon countdown reset to: ' + Memory.failSafe9);
+        }
+    }
+
 
 
 
 //Nomads
     if (nomadsH.length < nhCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NH' + Memory.cNum2, {
             role: 'harvester',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room2]Spawning new nomad harvester: ' + newName);
+        console.log('[Room7]Spawning new nomad harvester: ' + newName);
         Memory.cNum2++;
     }
     else if (nomadsB.length < nbCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NB' + Memory.cNum2, {
             role: 'builder',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room2]Spawning new nomad builder: ' + newName);
+        console.log('[Room7]Spawning new nomad builder: ' + newName);
         Memory.cNum2++;
     }
     else if (nomadsR.length < nrCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NR' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY], 'NR' + Memory.cNum2, {
             role: 'repairer',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room2]Spawning new nomad builder: ' + newName);
+        console.log('[Room7]Spawning new nomad builder: ' + newName);
         Memory.cNum2++;
     }
     else if (nomadsU.length < nuCap) {
-        var newName = Game.spawns['Spawn2'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum2, {
+        var newName = Game.spawns['Spawn7'].createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'NU' + Memory.cNum2, {
             role: 'upgrader',
             bornIn: 'nomad',
             goFlag: '1'
         });
-        console.log('[Room2]Spawning new nomad upgrader: ' + newName);
+        console.log('[Room7]Spawning new nomad upgrader: ' + newName);
         Memory.cNum2++;
     }
 
@@ -1088,6 +1187,56 @@ module.exports.loop = function () {
             }
         }
     }
+
+
+
+//Link Room 6
+    var link6Cooldown = senderLink5.cooldown;
+    if (senderLink6.energy > 0){
+        if (senderLink6.cooldown == "0"){
+            if (senderLink6.energy < receiverLink6.energyCapacity - receiverLink6.energy){
+                //                console.log("Sender 2 attempting to send all it's got")
+                senderLink6.transferEnergy(receiverLink6, senderLink6.energy)
+            }
+            else {
+//                console.log("Sender 2 attempting to cap off")
+                senderLink6.transferEnergy(receiverLink6, receiverLink6.energyCapacity - receiverLink6.energy);
+            }
+        }
+    }
+
+    
+    
+//Link Room 7
+    var link7Cooldown = senderLink5.cooldown;
+    if (senderLink7.energy > 0){
+        if (senderLink7.cooldown == "0"){
+            if (senderLink7.energy < receiverLink7.energyCapacity - receiverLink7.energy){
+                //                console.log("Sender 2 attempting to send all it's got")
+                senderLink7.transferEnergy(receiverLink7, senderLink7.energy)
+            }
+            else {
+//                console.log("Sender 2 attempting to cap off")
+                senderLink7.transferEnergy(receiverLink7, receiverLink7.energyCapacity - receiverLink7.energy);
+            }
+        }
+    }    
+    
+    
+//Link Room 8
+    var link8Cooldown = senderLink5.cooldown;
+    if (senderLink8.energy > 0){
+        if (senderLink8.cooldown == "0"){
+            if (senderLink8.energy < receiverLink8.energyCapacity - receiverLink8.energy){
+                //                console.log("Sender 2 attempting to send all it's got")
+                senderLink8.transferEnergy(receiverLink8, senderLink8.energy)
+            }
+            else {
+//                console.log("Sender 2 attempting to cap off")
+                senderLink8.transferEnergy(receiverLink8, receiverLink8.energyCapacity - receiverLink8.energy);
+            }
+        }
+    }      
 
 
 
@@ -1398,6 +1547,8 @@ module.exports.loop = function () {
 });
     for (var tower7 of towers7) {
         var targetTower7 = tower7.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        //var targetTower7 = tower7.pos.findInRange(FIND_HOSTILE_CREEPS[0]);
+        //var targetTower7 = Game.getObjectById("59a44769f3886b021f2a20ca");
 
 //Code to detect allies
         ally = 0;
