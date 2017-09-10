@@ -109,7 +109,8 @@ var roleUpgrader = {
             var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
             creep.moveTo(spwn);
             if((spwn.energy) > [0]) {
-                spwn.transferEnergy(creep);
+                //spwn.transferEnergy(creep);
+                creep.withdraw(spwn);
             }
             else {
 
@@ -132,7 +133,8 @@ var roleUpgrader = {
             if (target !== null) {
                 if (creep.pos.inRangeTo(target, 2) == 1){
                     creep.moveTo(target);
-                    target.transferEnergy(creep)
+                    creep.withdraw(target);
+                    //target.transferEnergy(creep)
                 }
                 else {
                     var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {

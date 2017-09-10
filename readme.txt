@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.196d
+Version 0.197
 
 
 
@@ -23,6 +23,12 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+Version 0.197
+9/10/2017
+---------------------------
+- Did away with depracted structure.transfer in favor of creep.withdraw.
+
 
 Version 0.196d
 9/10/2017

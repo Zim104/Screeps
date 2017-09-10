@@ -152,7 +152,8 @@ var roleRepairer = {
                 var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
                 creep.moveTo(spwn);
                 if((spwn.energy) > [0]) {
-                    spwn.transferEnergy(creep);
+                    creep.withdraw(spwn);
+                    //spwn.transferEnergy(creep);
                 }
                 else {
 
