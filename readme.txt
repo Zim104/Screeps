@@ -1,6 +1,6 @@
 Hunter's Screep Code
 ===========================
-Version 0.197
+Version 0.198
 
 
 
@@ -23,6 +23,13 @@ o Clean up cpu usage by using less pathfinding.
 
 History
 ===========================
+
+Version 0.198
+9/10/2017
+---------------------------
+- Actually fixed the creep.withdraw thing.
+- Added tower support for room 9.
+
 
 Version 0.197
 9/10/2017

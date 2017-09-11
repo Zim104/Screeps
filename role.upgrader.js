@@ -99,8 +99,8 @@ var roleUpgrader = {
 // Get energy from sources?
         else if(getFrom=="sources") {
             var sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
             }
         }
 
@@ -109,8 +109,8 @@ var roleUpgrader = {
             var spwn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
             creep.moveTo(spwn);
             if((spwn.energy) > [0]) {
-                //spwn.transferEnergy(creep);
-                creep.withdraw(spwn);
+                creep.withdraw(spwn, RESOURCE_ENERGY)
+                spwn.transferEnergy(creep);
             }
             else {
 
@@ -133,7 +133,7 @@ var roleUpgrader = {
             if (target !== null) {
                 if (creep.pos.inRangeTo(target, 2) == 1){
                     creep.moveTo(target);
-                    creep.withdraw(target);
+                    creep.withdraw(target, RESOURCE_ENERGY);
                     //target.transferEnergy(creep)
                 }
                 else {

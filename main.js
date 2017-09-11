@@ -119,9 +119,9 @@ module.exports.loop = function () {
     var mCap9 = 0;  //miner    
 
 //Nomad population caps
-    var nhCap = 0;  //harvester
-    var nbCap = 2;  //builder
-    var nuCap = 2;  //upgrader
+    var nhCap = 1;  //harvester
+    var nbCap = 0;  //builder
+    var nuCap = 5;  //upgrader
     var nrCap = 0;  //repairer
 
 //Turn on tower wall healing?
@@ -141,6 +141,8 @@ module.exports.loop = function () {
     var tower7HealTo = 50000;
     var tower8Heal = 1;
     var tower8HealTo = 40000;
+    var tower9Heal = 1;
+    var tower9HealTo = 5000;    
 
 //Towers will only heal if storage is higher than this amount of energy
     var tower1HealStores = 400000;
@@ -193,6 +195,7 @@ module.exports.loop = function () {
 
 
 //-----SETTINGS-----
+
 
 
     
@@ -1619,7 +1622,52 @@ module.exports.loop = function () {
             }
         }
     }
+    
+    
+  
+    //Room 9 Tower Stuff
+//Shuts off tower healing if energy storage is not enough
+    var storage9 = Room9.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > tower9HealStores)
+}
+});
+    if (storage9 == ""){
+        tower9HealHealShutoff = 0
+    }
+    else {
+        tower9HealHealShutoff = 0
+    }
+//Tower Defense Room 9
+    var towers9 = Room9.find(FIND_STRUCTURES, {
+        filter: (s) => s.structureType == STRUCTURE_TOWER
+});
+    for (var tower9 of towers9) {
+        var targetTower9 = tower9.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 
+//Code to detect allies
+        ally = 0;
+        for (i=0; i < allianceMembers.length;i++){
+            if (targetTower9 != undefined && targetTower9.owner.username == allianceMembers[i]){
+                ally = 1;
+            }
+        }
+
+        if (targetTower9 != undefined) {
+            tower9.attack(targetTower9);
+//            Game.notify("Room9 Tower has spotted enemies!");
+            console.log("[Room9]ENEMY SIGHTED!")
+        }
+//Tower Healing
+        else if(tower9Heal == 1 && tower9HealHealShutoff !== 1) {
+            var closestDamagedStructure = tower9.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => (structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART) && structure.hits < tower9HealTo && structure.hits != structure.hitsMax
+        });
+            if(closestDamagedStructure && tower9.energy > 750) {
+                tower9.repair(closestDamagedStructure);
+            }
+        }
+    }
     
 
 
